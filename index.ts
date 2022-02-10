@@ -10,6 +10,13 @@ const userTemplate = await Deno.readTextFile("user.html")
 app.use(staticFiles("website"));
 
 app.get("/:user", (req, res) => {
+	res.send(Eta.render(userTemplate, {
+		username: "yourfriend",
+		contact: "friend@yourfriend.lv",
+		description: "This is not melon.rest I promise!!! :3",
+		profile_picture: "https://cdn.discordapp.com/attachments/932004910856273941/941259618435350528/thumb-156141.png",
+	}))
+	/*
 	fetch(backend + "/")
 	.then(async response => {
 		res.send(Eta.render(userTemplate, await response.json()));
@@ -17,7 +24,7 @@ app.get("/:user", (req, res) => {
 	.catch(e => {
 		res.setStatus(500);
 		res.send("500 " + e);
-	});
+	});*/
 })
 app.listen(8080, () => {
 	console.log("Started frontend!")

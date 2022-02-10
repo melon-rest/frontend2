@@ -11,16 +11,16 @@
 			<div class="row justify-content-center">
 					<div class="ms-user ms-compact ms-background">
 						<div class="ms-avatar">
-							<img class="ms-avatar-img" src="<%= it.profile_picture %>">
+							<img class="ms-avatar-img" src="{{ profile_picture | escape }}">
 						</div>
 						<div class="ms-user-info">
 							<p style="margin:0; line-height:1.3;">
-								<b><%= it.username %></b><br/>
-								<%= it.contact %><br/>
+								<b>{{ username | escape }}</b><br/>
+								{{ contact | escape }}<br/>
 							</p>
 						</div>
 						<div class="ms-user-content">
-							<span><%= it.description %></span>
+							<span>{{ description | escape }}</span>
 						</div>
 					</div>
 			</div>

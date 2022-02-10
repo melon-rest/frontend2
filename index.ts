@@ -1,16 +1,17 @@
 import { opine } from "https://deno.land/x/opine/mod.ts";
 import staticFiles from "https://deno.land/x/static_files@1.1.6/mod.ts";
-import * as Eta from "https://deno.land/x/eta@v1.12.3/mod.ts";
+import { Liquid } from "https://esm.sh/liquidjs"
 
 const app = opine();
 
 const backend = Deno.env.get("DENO_DEPLOYMENT_ID") ? "https://api.melon.rest" :"http://localhost:8081";
 const userTemplate = await Deno.readTextFile("user.html")
+const templating = new Liquid();
 
 app.use(staticFiles("website"));
 
 app.get("/:user", (req, res) => {
-	res.send(Eta.render(userTemplate, {
+	res.send(templating.parseAndRenderSync(userTemplate, {
 		username: "yourfriend",
 		contact: "friend@yourfriend.lv",
 		description: "This is not melon.rest I promise!!! :3",

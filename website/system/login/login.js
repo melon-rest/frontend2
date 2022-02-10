@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 const usernameElement = document.getElementById("username");
 const passwordElement = document.getElementById("password");
 

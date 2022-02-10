@@ -18,9 +18,9 @@ app.get("/:user", (req, res) => {
 		profile_picture: "https://cdn.discordapp.com/attachments/932004910856273941/941259618435350528/thumb-156141.png",
 	}))
 	/*
-	fetch(backend + "/")
+	fetch(backend + "/api/v1/user/" + req.params.user)
 	.then(async response => {
-		res.send(Eta.render(userTemplate, await response.json()));
+		res.send(templating.parseAndRenderSync(userTemplate, await response.json()));
 	})
 	.catch(e => {
 		res.setStatus(500);

@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+addEventListener("load", () => {
 	const style = document.createElement("style");
 	style.innerHTML = `
 	.centered {

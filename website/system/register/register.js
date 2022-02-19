@@ -1,49 +1,56 @@
 const usernameInput = document.getElementById("username");
 const usernameInputText = usernameInput.parentElement.querySelector(".ms-under-input");
 
-usernameInput.addEventListener("input", ev => {
+let inputTimeout = null;
+
+usernameInput.addEventListener("input", _ev => {
+	clearTimeout(inputTimeout);
+
 	usernameInput.className = "ms-info"
 	usernameInputText.className = "ms-under-input ms-text-info"
 	usernameInputText.innerText = "Checking availability...";
-	fetch(window.biopages.backend + "/api/v1/username-availability", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			username: usernameInput.value
+
+	inputTimeout = setTimeout(function () {
+		fetch(window.biopages.backend + "/api/v1/username-availability", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				username: usernameInput.value
+			})
 		})
-	})
-	.then(async response => {
-		try {
-			const body = await response.json();
-		} catch {
+		.then(async response => {
+			let body;
+
+			try {
+				body = await response.json();
+			} catch {
+				usernameInput.className = "ms-danger"
+				usernameInputText.className = "ms-under-input ms-text-danger"
+				usernameInputText.innerText = "Failed to check availability.";
+		
+				return;
+			}
+
+
+			if(body.taken) {
+				usernameInputText.className = "ms-under-input ms-text-danger"
+				usernameInput.className = "ms-danger"
+				usernameInputText.innerText = "Username is taken.";
+			} else {
+				usernameInput.className = "ms-success"
+				usernameInputText.className = "ms-under-input ms-text-success"
+				usernameInputText.innerText = "Username is available!";
+			}
+		})
+		.catch(() => {
 			usernameInput.className = "ms-danger"
 			usernameInputText.className = "ms-under-input ms-text-danger"
+
 			usernameInputText.innerText = "Failed to check availability.";
-	
-			return;
-		}
-
-
-		if(body.taken) {
-			usernameInputText.className = "ms-under-input ms-text-danger"
-			usernameInput.className = "ms-danger"
-			usernameInputText.innerText = "Username is taken.";
-		} else {
-			usernameInput.className = "ms-success"
-
-			usernameInputText.className = "ms-under-input ms-text-success"
-			usernameInputText.innerText = "Username is available!";
-		}
-	})
-	.catch(() => {
-		usernameInput.className = "ms-danger"
-		usernameInputText.className = "ms-under-input ms-text-danger"
-
-		usernameInputText.innerText = "Failed to check availability.";
-
-	})
+		})
+	}, 1000);
 })
 
 const passwordInput = document.getElementById("password");
@@ -60,8 +67,9 @@ document.getElementById("submit").addEventListener("click", () => {
 		})
 	})
 	.then(async response => {
+		let body;
 		try {
-			const body = await response.json();
+			body = await response.json();
 		} catch {
 			iziToast.error({
 				title: "Error",

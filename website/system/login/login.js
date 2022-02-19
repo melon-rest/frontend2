@@ -14,8 +14,10 @@ document.getElementById("submit").addEventListener("click", () => {
 		})
 	})
 	.then(async response => {
+		let body;
+
 		try {
-			const body = await response.json();
+			body = await response.json();
 		} catch {
 			iziToast.error({
 				title: "Error",

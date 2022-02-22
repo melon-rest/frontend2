@@ -39,7 +39,7 @@ document.getElementById("submit").addEventListener("click", () => {
 			});
 
 			setTimeout(() => {
-				window.location.href = "/user.html";
+				window.location.href = "/system/user/";
 			}, 1000);
 		} else {
 			iziToast.error({

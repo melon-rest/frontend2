@@ -28,7 +28,7 @@ document.getElementById("submit").addEventListener("click", () => {
 			return;
 		}
 
-		if (response.status === 200) {
+		if (response.ok) {
 			localStorage.setItem("token", body.token);
 
 			iziToast.success({

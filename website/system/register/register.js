@@ -80,7 +80,7 @@ document.getElementById("submit").addEventListener("click", () => {
 			return;
 		}
 
-		if (response.status === 200) {
+		if (response.ok) {
 			iziToast.success({
 				title: "Success",
 				message: "You've registered a account! Please log in now!",

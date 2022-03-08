@@ -13,7 +13,11 @@
 			<div class="row justify-content-center">
 					<div class="ms-user ms-compact ms-background">
 						<div class="ms-avatar">
-							<img class="ms-avatar-img" src="{{ profile_picture | escape }}">
+							{% if profile_picture %}
+								<img class="ms-avatar-img" src="https://cdn.melon.rest:2053/melon-rest/{{ username | escape }}_pfp">
+							{% else %}
+								<img class="ms-avatar-img" src="https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png">
+							{% endif %}
 						</div>
 						<div class="ms-user-info">
 							<p style="margin:0; line-height:1.3;">

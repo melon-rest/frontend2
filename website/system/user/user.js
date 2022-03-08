@@ -4,11 +4,11 @@ if(!localStorage.getItem("token")) {
 
 const iframe = document.getElementById("iframe");
 
-document.getElementById("submit").addEventListener("click", () => {
-	const contact = document.getElementById("contact");
-	const description = document.getElementById("description");
-	const profile_picture = document.getElementById("profile_picture");
+const contact = document.getElementById("contact");
+const description = document.getElementById("description");
+const profile_picture = document.getElementById("profile_picture");
 
+document.getElementById("submit").addEventListener("click", () => {
 	const form = new FormData() 
 
 	if(contact.value) form.append("contact", contact.value);
@@ -68,8 +68,10 @@ async function start() {
 		const userInfo = await user.json();
 
 		document.getElementById("username").innerText = userInfo.username;
-		iframe.src = "/" + userInfo.username;
+		contact.value = userInfo.contact;
+		description.value = userInfo.description;
 
+		iframe.src = "/" + userInfo.username;
 	} else {
 		localStorage.removeItem("token");
 		window.location.href = "/";

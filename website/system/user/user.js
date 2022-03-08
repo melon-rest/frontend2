@@ -10,9 +10,10 @@ document.getElementById("submit").addEventListener("click", () => {
 	const profile_picture = document.getElementById("profile_picture");
 
 	const form = new FormData() 
-	form.append("contact", contact.value);
-	form.append("description", description.value);
-	form.append("profile_picture", profile_picture.files[0]);
+
+	if(contact.value) form.append("contact", contact.value);
+	if(description.value) form.append("description", description.value);
+	if(profile_picture.files.length !== 0) form.append("profile_picture", profile_picture.files[0]);
 
 	fetch(window.biopages.backend + "/api/v1/@me/updateBasicData", {
 		method: "PUT",

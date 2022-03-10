@@ -16,7 +16,7 @@ document.getElementById("submit").addEventListener("click", () => {
 	if(profile_picture.files.length !== 0) form.append("profile_picture", profile_picture.files[0]);
 
 	fetch(window.biopages.backend + "/api/v1/@me/updateBasicData", {
-		method: "PUT",
+		method: "POST",
 		body: form,
 		headers: {
 			"X-Token": localStorage.getItem("token")

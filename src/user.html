@@ -34,12 +34,12 @@
 			
 			document.getElementById("profile_picture").src = 
 				json.profile_picture ? "https://cdn.melon.rest/melon-rest/" + json.username + "_pfp" :
-					"url(https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png)"
+					"https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png"
 			
 
-			document.getElementById("background").style.backgroundImage  = 
-				json.background ? "https://cdn.melon.rest/melon-rest/" + json.username + "_bg" :
-					"url(https://wallpapersmug.com/download/1920x1080/5c67c8/watermelons-fruits-pattern-digital-art.jpg)"
+			document.getElementById("background").style.backgroundImage  = "url(" + 
+				(json.background ? "https://cdn.melon.rest/melon-rest/" + json.username + "_bg" :
+					"https://wallpapersmug.com/download/1920x1080/5c67c8/watermelons-fruits-pattern-digital-art.jpg") + ")"
 
 		} else {
 			document.getElementById("description").innerText = "This user you queried does not exist.";

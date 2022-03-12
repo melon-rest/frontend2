@@ -1,12 +1,13 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="tw.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="tw.css" rel="stylesheet">
 </head>
-<body>
-	<div class="flex h-screen bg-gray-900">
+
+<body class="hidden">
+	<div class="flex h-screen bg-gray-900" id="body">
 		<div class="m-auto max-w-lg p-8 bg-gray-800 text-white shadow-2xl text-center">
 			<h1 class="text-xl pb-2">melon.rest</h1>
 
@@ -18,5 +19,25 @@
 			<a class="indigo-styled-input w-20" href="register.html">Register</a>
 		</div>
 	</div>
+
+	<script>
+		async function run() {
+			const username = document.location.href.split("#")[1]
+
+			if(username) {
+				const req = await fetch("/user.html");
+
+				const resp = await req.text()
+				document.querySelector("html").innerHTML = resp;
+				
+				[...document.querySelectorAll("script")]
+					.forEach(b => Object.getPrototypeOf(async function(){}).constructor(b.innerText)())
+			} else {
+				document.body.classList.remove("hidden")
+			}
+		}
+
+		run()
+	</script>
 </body>
 </html>

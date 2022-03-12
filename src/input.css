@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-	.btn {
-		@apply shadow-2xl border-solid border-2 border-indigo-400 rounded-lg p-0.5 w-20 bg-indigo-500 m-0.5 mt-3;
+	.indigo-styled-input {
+		@apply shadow-2xl border-solid border-2 border-indigo-400 rounded-lg p-0.5 bg-indigo-500 m-0.5 mt-3 hover:border-indigo-300 hover:bg-indigo-400;
 	}
 }

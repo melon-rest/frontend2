@@ -6,8 +6,8 @@
   	<link href="tw.css" rel="stylesheet">
 </head>
 <body>
-	<div class="flex h-screen bg-gray-900" id="background">
-		<div class="m-auto max-w-lg p-8 backdrop-blur-lg text-white shadow-2xl grid grid-cols-2 gap-2 bg-cover">
+	<div class="flex h-screen bg-gray-900 bg-cover" id="background">
+		<div class="m-auto max-w-lg p-8 backdrop-blur-lg text-white shadow-2xl grid grid-cols-2 gap-2" id="profile">
 			<div>
 				<img class="w-64 aspect-square" id="profile_picture">
 			</div>
@@ -22,6 +22,7 @@
 		</div>
 	</div>
 	<script type="module">
+		const cdn = "https://cdn.melon.rest/melon-rest/";
 		const params = new URLSearchParams(document.location.search);
 		if(!params.has("username")) document.pathname = "/";
 
@@ -36,22 +37,21 @@
 			document.getElementById("username").innerText = json.username;
 			document.getElementById("contact").innerText = json.contact;
 			
-			document.getElementById("profile_picture").src = 
-				json.profile_picture ? "https://cdn.melon.rest/melon-rest/" + json.username + "_pfp" :
-					"https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png"
-			
-			document.getElementById("background").style.backgroundImage  = "url(" + 
-				(json.background ? "https://cdn.melon.rest/melon-rest/" + json.username + "_bg" :
-					"https://wallpapersmug.com/download/1920x1080/5c67c8/watermelons-fruits-pattern-digital-art.jpg") + ")"
+			document.getElementById("profile_picture").src = json.profile_picture ?
+				`${cdn}${json.username}_pfp` : 
+				"https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png"
+
+			if(json.background) {
+				document.getElementById("background").style.backgroundImage = `url(${cdn}${json.username}_bg)`;
+			} else {
+				document.getElementById("profile").classList.add("bg-gray-800");
+			}
 
 		} else {
 			document.getElementById("description").innerText = "This user you queried does not exist.";
 			document.getElementById("username").innerText = "missing user :(";
 			document.getElementById("contact").innerText = "";
 			document.getElementById("profile_picture").src = "https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png"
-			document.getElementById("background").style.backgroundImage = "url(https://wallpapersmug.com/download/1920x1080/5c67c8/watermelons-fruits-pattern-digital-art.jpg)"
-
-
 		}
 	</script>
 </body>

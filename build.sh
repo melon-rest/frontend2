@@ -1,2 +1,2 @@
-npx tailwindcss  --minify -i ./src/input.css -o ./dist/tw.css
-find src/ ! -name *.css -exec cp -r -t dist/ {} + 
+npx tailwindcss --minify -i ./src/input.css -o ./dist/tw.css
+find src/* ! -name *.css -exec cp -r -t dist/ {} + 

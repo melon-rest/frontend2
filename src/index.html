@@ -21,23 +21,27 @@
 	</div>
 
 	<script>
-		async function run() {
-			const username = document.location.href.split("#")[1]
+	const username = document.location.href.split("#")[1]
 
-			if(username) {
-				const req = await fetch("/user.html");
+	if(username) {
+		document.body.innerHTML = ""
 
-				const resp = await req.text()
-				document.querySelector("html").innerHTML = resp;
-				
-				[...document.querySelectorAll("script")]
-					.forEach(b => Object.getPrototypeOf(async function(){}).constructor(b.innerText)())
-			} else {
-				document.body.classList.remove("hidden")
-			}
-		}
+		const iframe = document.createElement("iframe")
 
-		run()
+		iframe.src = "/user.html?username=" + username
+		iframe.style.height = "100%"
+		iframe.style.width = "100%"
+		iframe.style.position = "absolute"
+
+		document.body.appendChild(iframe);
+
+		iframe.addEventListener('load', () => {
+			document.body.classList.remove("hidden")
+		}, true)
+
+	} else {
+		document.body.classList.remove("hidden")
+	}
 	</script>
 </body>
 </html>

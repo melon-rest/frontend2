@@ -4,32 +4,54 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="tw.css" rel="stylesheet">
+	<script src="index.js"></script>
+
 </head>
 
 <body>
 	<div class="flex h-screen bg-gray-900" id="body">
-		<div class="m-auto max-w-lg p-8 bg-gray-800 text-white shadow-2xl text-center">
-			<h1 class="text-xl pb-2">unfinished</h1>
-			
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
-			<input placeholder="test" class="indigo-styled-input text-white">
+		<div class="m-auto p-8 bg-gray-800 text-white shadow-2xl ">
+			<div class="bg-gray-700 min-w-full p-2 flex flex-row">
+				<h1 class="text-xl break-all text-center" id="username">logged in as </h1>
+				
+				<a class="indigo-styled-input w-20 mx-3">home</a>
+				<a class="indigo-styled-input w-20 mr-3">home</a>
+				<a class="indigo-styled-input w-20 m-0">home</a>
+			</div>
 
-			<a class="indigo-styled-input w-20">cool button</a>			<a class="indigo-styled-input w-20">cool button</a>
-			<a class="indigo-styled-input w-20">cool button</a>
-			<a class="indigo-styled-input w-20">cool button</a>
-			<a class="indigo-styled-input w-20">cool button</a>
-			<a class="indigo-styled-input w-20">cool button</a>
-			<a class="indigo-styled-input w-20">cool button</a>
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg">
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at fringilla dolor. Quisque vel libero massa. Nunc laoreet, metus quis iaculis facilisis, mauris enim hendrerit felis, vitae ultricies lorem risus eu lorem. Nam iaculis tellus in mi dapibus congue nec et mi. Nullam non elit lacinia, porttitor nunc vel, feugiat erat. Suspendisse tempus sodales ex vitae condimentum. Aenean tincidunt eget ipsum sed blandit. Curabitur iaculis pulvinar urna, varius vestibulum justo semper ac. Duis turpis nibh, facilisis at justo a, accumsan laoreet massa. Quisque porta, purus quis auctor lobortis, nisl sem imperdiet ante, at mattis lectus nisl ut odio. Nullam iaculis tellus elit, at euismod mi fringilla ut. In tincidunt eu ante posuere tincidunt. Fusce purus quam, volutpat gravida libero eu, convallis pharetra nulla. Vestibulum nec justo quis mauris vulputate egestas ac sed erat.
+				</p>
+
+			</div>
+		</div>
 
 		</div>
 	</div>
 
-	<script>
+	<script type="module">
+		
+		if(localStorage.getItem("token")) {
+			const token = localStorage.getItem("token");
+
+			const req = await fetch(window.bio_pages.api+"/@me/info", {
+				headers: {
+					"X-Token": token
+				}
+			});
+
+			if(req.ok) {
+				const json = await req.json();
+				document.getElementById("username").innerHTML += json.username;
+			} else {
+				localStorage.removeItem("token")
+
+				document.location.pathname = "/"
+			}
+		} else {
+			document.location.pathname = "/"
+		}
 	</script>
 </body>
 </html>

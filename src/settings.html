@@ -16,7 +16,7 @@
 			<div class="bg-gray-700 min-w-full p-2 flex flex-row max-h-12" id="top">
 				<h1 class="text-xl break-all text-center" id="username">logged in as </h1>
 				<a class="styled-input px-3 selected mx-3 cursor-pointer">Basic Info</a>
-				<a class="styled-input px-3 mr-3 cursor-pointer">discord linking</a>
+				<a class="styled-input px-3 mr-3 cursor-pointer hidden">Admin</a>
 			</div>
 
 			<div class="mt-2 bg-gray-700 p-2 max-w-lg" id="Basic Info">
@@ -35,9 +35,10 @@
 
 				<button id="basicInfo_submit" class="styled-input px-3 mt-3">Submit</button>
 			</div>
-			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="discord linking">
+
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="Admin">
 				<p>
-					visit https://yourfriend.lv 
+					no admin shit yet yo
 				</p>
 			</div>
 		</div>
@@ -113,9 +114,13 @@
 			if(req.ok) {
 				const json = await req.json();
 				document.getElementById("username").innerHTML += json.username;
-				
+
 				document.getElementById("basicInfo_contact").value = json.contact;
 				document.getElementById("basicInfo_description").value = json.description;
+
+				if(json.admin) {
+					document.querySelector("#top .hidden").classList.remove("hidden");
+				}
 			} else {
 				localStorage.removeItem("token")
 

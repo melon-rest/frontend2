@@ -113,6 +113,9 @@
 			if(req.ok) {
 				const json = await req.json();
 				document.getElementById("username").innerHTML += json.username;
+				
+				document.getElementById("basicInfo_contact").value = json.contact;
+				document.getElementById("basicInfo_description").value = json.description;
 			} else {
 				localStorage.removeItem("token")
 

@@ -5,33 +5,102 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="tw.css" rel="stylesheet">
 	<script src="index.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
 </head>
 
 <body>
 	<div class="flex h-screen bg-slate-900" id="body">
 		<div class="m-auto p-8 bg-slate-800 text-white shadow-2xl ">
-			<div class="bg-gray-700 min-w-full p-2 flex flex-row">
+			<div class="bg-gray-700 min-w-full p-2 flex flex-row max-h-12" id="top">
 				<h1 class="text-xl break-all text-center" id="username">logged in as </h1>
-				
-				<a class="styled-input w-20 mx-3">home</a>
-				<a class="styled-input w-20 mr-3">home</a>
-				<a class="styled-input w-20 m-0">home</a>
+				<a class="styled-input px-3 selected mx-3 cursor-pointer">Basic Info</a>
+				<a class="styled-input px-3 mr-3 cursor-pointer">discord linking</a>
 			</div>
 
-			<div class="mt-2 bg-gray-700 p-2 max-w-lg">
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg" id="Basic Info">
+				<input placeholder="Contact" id="basicInfo_contact" type="text" class="styled-input w-96 text-justify"><br>
+				<textarea placeholder="Description" id="basicInfo_description" class="styled-input mt-2 w-96 text-justify"></textarea><br>
+
+				<div class="my-3">
+					<span>Background</span>
+					<input id="basicInfo_background" type="file" class="styled-input">
+				</div>
+				<!-- freddy from five nights at fredddys was here -->
+				<div>
+					<span>Profile Picture</span>
+					<input id="basicInfo_profilePicture" type="file" class="styled-input"><br>
+				</div>
+
+				<button id="basicInfo_submit" class="styled-input px-3 mt-3">Submit</button>
+			</div>
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="discord linking">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at fringilla dolor. Quisque vel libero massa. Nunc laoreet, metus quis iaculis facilisis, mauris enim hendrerit felis, vitae ultricies lorem risus eu lorem. Nam iaculis tellus in mi dapibus congue nec et mi. Nullam non elit lacinia, porttitor nunc vel, feugiat erat. Suspendisse tempus sodales ex vitae condimentum. Aenean tincidunt eget ipsum sed blandit. Curabitur iaculis pulvinar urna, varius vestibulum justo semper ac. Duis turpis nibh, facilisis at justo a, accumsan laoreet massa. Quisque porta, purus quis auctor lobortis, nisl sem imperdiet ante, at mattis lectus nisl ut odio. Nullam iaculis tellus elit, at euismod mi fringilla ut. In tincidunt eu ante posuere tincidunt. Fusce purus quam, volutpat gravida libero eu, convallis pharetra nulla. Vestibulum nec justo quis mauris vulputate egestas ac sed erat.
+					visit https://yourfriend.lv 
 				</p>
-
 			</div>
-		</div>
-
 		</div>
 	</div>
 
 	<script type="module">
-		
+
+		document.getElementById("basicInfo_submit").addEventListener("click", async () => {
+			
+			const form = new FormData();
+			const contact = document.getElementById("basicInfo_contact");
+			const description = document.getElementById("basicInfo_description");
+			const background = document.getElementById("basicInfo_background");
+			const profile_picture = document.getElementById("basicInfo_profilePicture");
+			
+			if(contact.value) form.append("contact", contact.value);
+			if(description.value) form.append("description", description.value);
+			if(background.files[0]) form.append("background", background.files[0]);
+			if(profile_picture.files[0]) form.append("profile_picture", profile_picture.files[0]);
+			
+			const req = await fetch(`${window.bio_pages.api}/@me/updateBasicInfo`, {
+				method: "POST",
+				body: form,
+				headers: {
+					"X-Token": localStorage.getItem("token")
+				}
+			});
+
+			const res = await req.json();
+
+			if (req.ok) {
+				iziToast.success({
+					title: "Success",
+					message: "Basic Info updated!",
+					position: "center",
+					theme: "dark"
+				});
+
+				contact.value = description.value = background.value = profile_picture.value = "";
+			} else {
+				iziToast.error({
+					title: "Error",
+					message: res.message,
+					position: "center",
+					theme: "dark"
+				});
+			}
+		});
+
+		[...document.querySelectorAll("#top .styled-input")].forEach(element => {
+			element.addEventListener("click", () => {
+				const selectedButton = document.querySelector(".selected");
+				const selectedPage = document.getElementById(selectedButton.innerText)
+				const toBeSelected = document.getElementById(element.innerText);
+				
+				selectedPage.classList.add("hidden");
+				selectedButton.classList.remove("selected")
+
+				toBeSelected.classList.remove("hidden");
+				element.classList.add("selected");
+			})
+		})
+
 		if(localStorage.getItem("token")) {
 			const token = localStorage.getItem("token");
 

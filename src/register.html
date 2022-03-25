@@ -7,6 +7,7 @@
   <script src="index.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdUGxMdAAAAAOWwshJE2WPfvZgZTB5pzP5rWBR3"></script>
 </head>
 <body>
 	<div class="flex h-screen bg-slate-900">
@@ -26,40 +27,45 @@
 		const taken = document.getElementById("taken");
 		let timer;
 		
-		document.getElementById("submit").addEventListener("click", async () => {
-			const req = await fetch(`${window.bio_pages.api}/register`, {
-				method: "POST",
-				body: JSON.stringify({
-					username: username.value,
-					password: password.value
-				}),
+		document.getElementById("submit").addEventListener("click", () => {
+			grecaptcha.ready(() =>  {
+				grecaptcha.execute('6LdUGxMdAAAAAOWwshJE2WPfvZgZTB5pzP5rWBR3', { action: 'submit' }).then(async token => {
+					const req = await fetch(`${window.bio_pages.api}/register`, {
+						method: "POST",
+						body: JSON.stringify({
+							username: username.value,
+							password: password.value,
+							recaptcha: token
+						}),
 
-				headers: {
-					"Content-Type": "application/json"
-				}
-			});
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
 
-			const res = await req.json();
+					const res = await req.json();
 
-			if (req.ok) {
-				iziToast.success({
-					title: "Success",
-					message: "You've registered a account! Please log in now!",
-					position: "center",
-					theme: "dark"
+					if (req.ok) {
+						iziToast.success({
+							title: "Success",
+							message: "You've registered a account! Please log in now!",
+							position: "center",
+							theme: "dark"
+						});
+
+						setTimeout(() => {
+							window.location.href = "/";
+						}, 1000);
+					} else {
+						iziToast.error({
+							title: "Error",
+							message: res.message,
+							position: "center",
+							theme: "dark"
+						});
+					}
 				});
-
-				setTimeout(() => {
-					window.location.href = "/";
-				}, 1000);
-			} else {
-				iziToast.error({
-					title: "Error",
-					message: res.message,
-					position: "center",
-					theme: "dark"
-				});
-			}
+        	});
 		})
 		username.addEventListener("input", () => {
 			clearTimeout(timer);

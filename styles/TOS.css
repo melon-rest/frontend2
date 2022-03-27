@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap');
+font-family: 'Fredoka', sans-serif;
+
+.bottom {
+  position: fixed;
+  bottom: 100%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e3e4e6; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d9dadb; 
+}
+
+img.round {
+  border-radius: 10px;
+  size: 10px;
+}
+
+div.middle {
+
+    position: fixed;
+    top: 250px;
+    left: 600px;
+
+}

@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400&display=swap');
+font-family: 'Roboto Slab', sans-serif;
+
+
+
+.bottom {
+  position: fixed;
+  bottom: 100%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #e3e4e6; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d9dadb; 
+}
+
+.card {
+    border-radius: 1556px;
+}
+
+img.round {
+  border-radius: 10px;
+  size: 10px;
+}
+
+div.middle {
+    height: 200px;
+    width: 400px;
+
+    position: auto;
+    top: 10%;
+    left: 400px;
+
+}
+
+img.pfp {
+  border-radius: 15px;
+}
+
+input.vertical {
+  -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
+}
+
+.slider-width100
+{
+    width: 100px;
+}
+
+.form-group {
+  padding: -5px;
+}
+
+.form-control {
+    border: 0;
+}

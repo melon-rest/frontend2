@@ -7,7 +7,7 @@
 	<script src="index.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+	<script src="https://unpkg.com/feather-icons"></script>
 </head>
 
 <body>
@@ -16,10 +16,13 @@
 			<div class="bg-gray-700 min-w-full p-2 flex flex-row max-h-12" id="top">
 				<h1 class="text-xl break-all text-center" id="username">logged in as </h1>
 				<a class="styled-input px-3 selected mx-3 cursor-pointer">Basic Info</a>
+				<a class="styled-input px-3 mr-3 cursor-pointer">Buttons</a>
+
 				<a class="styled-input px-3 mr-3 cursor-pointer hidden">Admin</a>
+
 			</div>
 
-			<div class="mt-2 bg-gray-700 p-2 max-w-lg" id="Basic Info">
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg" id="basicinfo">
 				<input placeholder="Contact" id="basicInfo_contact" type="text" class="styled-input w-96 text-justify"><br>
 				<textarea placeholder="Description" id="basicInfo_description" class="styled-input mt-2 w-96 text-justify"></textarea><br>
 
@@ -27,7 +30,7 @@
 					<span>Background</span>
 					<input id="basicInfo_background" type="file" class="styled-input">
 				</div>
-				<!-- freddy from five nights at fredddys was here -->
+
 				<div>
 					<span>Profile Picture</span>
 					<input id="basicInfo_profilePicture" type="file" class="styled-input"><br>
@@ -36,7 +39,19 @@
 				<button id="basicInfo_submit" class="styled-input px-3 mt-3">Submit</button>
 			</div>
 
-			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="Admin">
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="buttons">
+				<p>
+					
+					<div class="flex flex-row justify-center my-3 populateWithAvailableButtons">
+						<i data-feather="eye"></i>
+						<i data-feather="heart"></i>
+						<i data-feather="feather"></i>
+					</div>
+					
+				</p>
+			</div>
+
+			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="admin">
 				<p>
 					no admin shit yet yo
 				</p>
@@ -44,12 +59,14 @@
 		</div>
 	</div>
 	<script> // tabs
+		const clean = a => a.toLowerCase().replace(/((?![(a-z)]).)*/gm, "");
+
 		[...document.querySelectorAll("#top .styled-input")].forEach(element => {
 			element.addEventListener("click", () => {
 				const selectedButton = document.querySelector(".selected");
-				const selectedPage = document.getElementById(selectedButton.innerText)
-				const toBeSelected = document.getElementById(element.innerText);
-				
+				const selectedPage = document.getElementById(clean(selectedButton.innerText))
+				const toBeSelected = document.getElementById(clean(element.innerText));
+
 				selectedPage.classList.add("hidden");
 				selectedButton.classList.remove("selected")
 
@@ -120,9 +137,11 @@
 				document.getElementById("basicInfo_contact").value = json.contact;
 				document.getElementById("basicInfo_description").value = json.description;
 
-				if(json.admin) {
+				feather.replace()
+				if(json.admin) 
 					document.querySelector("#top .hidden").classList.remove("hidden");
-				}
+						else
+					document.querySelector("#admin").remove()
 			} else {
 				localStorage.removeItem("token")
 

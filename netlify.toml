@@ -1,3 +1,4 @@
- from = "/*"
-  to = "/index.html"
-  status = 308
+[[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 308

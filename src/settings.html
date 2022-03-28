@@ -39,14 +39,15 @@
 				<button id="basicInfo_submit" class="styled-input px-3 mt-3">Submit</button>
 			</div>
 
-			<div class="mt-2 bg-gray-700 p-2 max-w-lg hidden" id="buttons">
+			<div class="mt-2 bg-gray-700 p-2 w-[38em] hidden" id="buttons">
 				<p>
-					
-					<div class="flex flex-row justify-center my-3 populateWithAvailableButtons">
-						<i data-feather="eye"></i>
-						<i data-feather="heart"></i>
-						<i data-feather="feather"></i>
-					</div>
+					<select id="buttonSelect" class="styled-input w-15">
+						<option value="">none</option>
+					</select>
+
+					<input placeholder="my discord" type="text" class="styled-input w-25 text-justify">
+					<input placeholder="https://discord.com/idk" type="text" class="styled-input w-25 text-justify">
+
 					
 				</p>
 			</div>
@@ -58,6 +59,25 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="module"> // buttons
+		const selectButton = document.getElementById("buttonSelect")
+
+		const buttonRequest = await fetch(`${window.bio_pages.api}/availableButtons`)
+		const buttons = await buttonRequest.json()
+
+		buttons.forEach(button => {	
+			const option = document.createElement("option")
+
+			option.value = button;
+			option.innerText = button;
+
+			selectButton.appendChild(option);
+		})
+		
+		feather.replace()
+	</script>
+
 	<script> // tabs
 		const clean = a => a.toLowerCase().replace(/((?![(a-z)]).)*/gm, "");
 
@@ -66,7 +86,7 @@
 				const selectedButton = document.querySelector(".selected");
 				const selectedPage = document.getElementById(clean(selectedButton.innerText))
 				const toBeSelected = document.getElementById(clean(element.innerText));
-
+				
 				selectedPage.classList.add("hidden");
 				selectedButton.classList.remove("selected")
 

@@ -66,6 +66,15 @@
 
 									<input type="file" class="form-control" id="background" accept="image/*" />
 								</div>
+								
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Banner</span>
+									</div>
+
+									<input type="file" class="form-control" id="banner" accept="image/*" />
+								</div>
+
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Audio</span>
@@ -169,6 +178,9 @@
 
 				if (document.getElementById("background").files[0])
 					form.append("background", document.getElementById("background").files[0]);
+
+				if (document.getElementById("banner").files[0])
+					form.append("banner", document.getElementById("banner").files[0]);
 
 				if (document.getElementById("audio").files[0])
 					form.append("audio", document.getElementById("audio").files[0]);

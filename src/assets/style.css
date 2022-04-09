@@ -115,6 +115,9 @@ particle .emoji {
 	display: flex !important;
 	flex-direction: column !important;
 	white-space: nowrap;
+	background-color: var(--background-accent);
+	padding: 8px;
+	border-radius: 16px;
 }
 
 .bio-contact {

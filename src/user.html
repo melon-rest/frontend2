@@ -42,7 +42,11 @@
 		<meta property="og:site_name" content="melon.rest" />
 		<meta property="og:title" content="<%= user.username %>" />
 		<meta property="og:description" content="<%= user.description %>" />
-
+		<style>
+			.audioShown {
+				display: none;
+			}
+		</style>
 	</head>
 
 	<body id="background" style="background-size: cover; background-position: center">
@@ -54,7 +58,7 @@
 			<div class="row h-100">
 				<div class="col-md-6 offset-md-3 align-self-center">
 					<div class="bio-card">
-						<div class="bio-header">
+						<div class="bio-header" id="header">
 							<div class="row">
 								<div class="bio-details">
 									<img id="profile_picture" alt="Missing" src="/?"/>
@@ -119,6 +123,10 @@
 				document.getElementById("username").innerText = json.username;
 				document.getElementById("contact").innerText = json.contact;
 
+				if(json.banner) {
+					document.getElementById("header").style.backgroundImage = `url(${window.bio_pages.cdn}${json.username}_banner)`
+				}
+				
 				if(json.audio) {
 					const audio = document.getElementById("audio");
 
@@ -131,7 +139,9 @@
 
 					document.getElementById("music-volume").addEventListener("input", function () {
 						audio.volume = document.getElementById("music-volume").value/100;
-					})
+					});
+
+					[...document.querySelectorAll(".audioShown")].forEach(e => e.style.display = "inherit")
 				} else {
 					[...document.querySelectorAll(".audioShown")].forEach(e => e.remove());
 				}

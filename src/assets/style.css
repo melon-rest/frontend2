@@ -159,15 +159,34 @@ particle .emoji {
 	padding: 8px;
 }
 
-.bio-footer i {
+.bio-footer a {
 	transition: 0.3s;
 	background-color: var(--background);
 	padding: 8px;
 	border-radius: 8px;
 	color: var(--color);
+
+	white-space: nowrap;
+	margin: 6px;
 }
 
-.bio-footer i:hover {
+svg {
+	margin: 5px;
+	padding: 5px;
+	box-sizing: content-box;
+}
+
+.active {
+	background-color: var(--background-accent-2);
+
+	border-color: inherit;
+	-webkit-box-shadow: none;
+
+	box-shadow: 3px 3px var(--accent);
+	border-radius: 8px;
+}
+
+.bio-footer a:hover {
 	transition: 0.3s;
 	background-color: var(--background-accent-2);
 }

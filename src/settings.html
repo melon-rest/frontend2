@@ -96,32 +96,24 @@
 								</div>
 
 								<div class="btn btn-success mr-2" id="submit">Submit</div>
-								<!--
-                        <h3 class="text-center">Buttons</h3>
-                        <div  id="iconList" class="text-center">
-                            <% buttons.forEach(a=>{ %>
-                                <button type="button" class="btn mt-2"><i class="<%= a %>"></i></button>
-                            <% }) %>
-                        </div>
+								
+								<h3 class="text-center">Buttons</h3>
+								
+								<div id="buttonList" class="text-center">
+								</div>
 
-                        <% if(user.buttons.length !== 0) { %>
-                            <div class="bio-footer mb-2" id="placedIconList">
-                                <% user.buttons.forEach(button => { %>
-                                    <i class="<%= button.icon %>" title="<%= button.url %>" style="cursor: pointer;"></i>
-                                <% }) %>
-                            </div>
-                        <% } %>
+								<p id="buttonInfo" class="text-center mx-3"></p>
 
-                        <div class="input-group mb-2 mt-2">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">Button URL</span>
-                            </div>
-                           <input type="text" class="form-control" id="buttonUrl">
-                           <div class="input-group-append">
-                            <button class="btn btn-success" type="button" id="addButton">Add Button</button>
-                          </div>
-                        </div>
--->
+								<div class="bio-footer mb-2" id="placedIconList">
+								</div>
+								
+
+
+								<input type="text" class="form-control m-2" id="buttonUrl" placeholder="https://spotify.com">
+
+								<input type="text" class="form-control mb-2 mx-2" id="buttonName" placeholder="my spotify">
+
+								<button class="btn btn-success" type="button" id="addButton">Add Button</button>
 
 								<!--
                         <h3 class="text-center">Discord</h3>
@@ -168,8 +160,63 @@
 		<script src="https://unpkg.com/feather-icons"></script>
 
 		<script src="/assets/index.js"></script>
+		<script src="https://unpkg.com/feather-icons"></script>
 
 		<script type="module">
+			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`)
+			const availableButtons = await buttonFetch.json();
+
+			availableButtons.forEach((b,i) => {
+				const icon = document.createElement("i");
+				icon.setAttribute("data-feather", b)
+				
+				document.getElementById("buttonList").appendChild(icon);
+			})
+
+			feather.replace()
+
+			const buttonList = [...document.getElementById("buttonList").children];
+
+			buttonList.forEach(element =>{
+				element.addEventListener("click", ()=>{
+					buttonList.forEach(b => {
+						if(b.classList.contains("active"))
+							b.classList.remove("active")
+					});
+					
+					element.classList.add("active");
+				})
+			})
+
+			document.getElementById("addButton").addEventListener("click", async () => {
+				const activeButton = buttonList.find(e => e.classList.contains("active"));
+
+				if(activeButton && document.getElementById("buttonUrl").value) {
+					const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
+						"method": "POST",
+						"body": JSON.stringify({
+							type: [...activeButton.classList].find(e => e.startsWith('feather-')).split("feather-").at(-1),
+							url: document.getElementById("buttonUrl").value,
+							longName: document.getElementById("buttonName").value
+						}),
+						"headers": {
+							"Content-Type": "application/json",
+							"X-Token": localStorage.getItem("token")
+						}
+					})
+
+					if(req.ok) {
+						location.reload();
+					} else {
+						iziToast.error({
+							title: "Error",
+							message: (await req.json()).message,
+							position: "center",
+							theme: "dark",
+						});
+					}
+				}
+			})
 			document.getElementById("submit").addEventListener("click", async () => {
 				const form = new FormData();
 
@@ -238,6 +285,52 @@
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
+					
+					if(json.buttons.length) {
+						json.buttons.forEach(button => {
+							const link = document.createElement('a');
+							
+							const icon = document.createElement("i");
+							icon.setAttribute("data-feather", button.type)
+
+							if(json.buttons.length <= 3) {
+								link.innerText = button.longName;
+							} else {
+								document.getElementById("buttonInfo").innerText = "More than 3 buttons will collapse!"
+							}
+							
+							link.title = button.url;
+							link.prepend(icon);
+
+
+							link.addEventListener("click", async () => {
+								const req = await fetch(window.bio_pages.api + "/@me/removeButton", {
+									"method": "POST",
+									"body": JSON.stringify({
+										type: button.type
+									}),
+									"headers": {
+										"Content-Type": "application/json",
+										"X-Token": token,
+									}
+								})
+						
+								if(req.ok) {
+									location.reload();
+								} else {
+									iziToast.error({
+										title: "Error",
+										message: (await req.json()).message,
+										position: "center",
+										theme: "dark",
+									});
+								}
+							})
+							
+
+							document.getElementById("placedIconList").appendChild(link);
+						})
+					}
 					feather.replace();
 				} else {
 					localStorage.removeItem("token");

@@ -45,7 +45,7 @@
 				<div class="col-md-6 offset-md-3 align-self-center">
 					<div class="bio-card animate__animated animate__fadeIn">
 						<div class="bio-body" style="background-color: var(--background)">
-							<h1 class="text-center" id="username">User (XXX)'s settings</h1>
+							<h1 class="text-center">User <span id="username"></span>'s settings</h1>
 							<!--
                     <h6 class="text-center"><%-motd.message%></h6>
                     <h6 class="text-center">at <%=new Date(motd.time).toLocaleString()%></h6> [implement motd]
@@ -66,14 +66,13 @@
 
 									<input type="file" class="form-control" id="background" accept="image/*" />
 								</div>
-								<!--
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Audio</span>
-                            </div>
-
-                            <input type="file" class="form-control" title="<%= user.mp3 %>" id="mp3" accept="audio/mp3,audio/*;capture=microphone">
-                        </div>-->
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Audio</span>
+									</div>
+		
+									<input type="file" class="form-control" id="audio" accept="audio/mpeg">
+								</div>
 
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
@@ -171,6 +170,9 @@
 				if (document.getElementById("background").files[0])
 					form.append("background", document.getElementById("background").files[0]);
 
+				if (document.getElementById("audio").files[0])
+					form.append("audio", document.getElementById("audio").files[0]);
+
 				if (document.getElementById("description").value)
 					form.append("description", document.getElementById("description").value);
 
@@ -195,7 +197,7 @@
 						theme: "dark",
 					});
 
-					background.value = profile_picture.value = "";
+					audio.value = background.value = profile_picture.value = "";
 					document.getElementById("iframe").contentWindow.location.reload();
 				} else {
 					iziToast.error({
@@ -220,10 +222,7 @@
 
 				if (req.ok) {
 					const json = await req.json();
-					document.getElementById("username").innerHTML = document
-						.getElementById("username")
-						.innerHTML.replace("(XXX)", json.username);
-
+					document.getElementById("username").innerText = json.username;
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;

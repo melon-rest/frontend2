@@ -46,6 +46,10 @@
 	</head>
 
 	<body id="background" style="background-size: cover; background-position: center">
+		<audio id="audio" class="audioShown" loop autoplay>
+			<source src="/?" type="audio/mpeg">
+		</audio>
+
 		<div class="container vh-100">
 			<div class="row h-100">
 				<div class="col-md-6 offset-md-3 align-self-center">
@@ -53,7 +57,7 @@
 						<div class="bio-header">
 							<div class="row">
 								<div class="bio-details">
-									<img id="profile_picture" alt="Missing" src="...."/>
+									<img id="profile_picture" alt="Missing" src="/?"/>
 									<h5 class="bio-username">
 										<span id="username"></span>
 										<span class="bio-contact" id="contact">placeholder</span>
@@ -65,19 +69,17 @@
 							<div class="bio-description" style="white-space: pre-wrap">
 								<p id="description"></p>
 							</div>
-							<!--
-					<% if(user.mp3) { %>
-						<div class="bio-music-volume">
-							<input type="range" class="custom-range" id="music-volume">
-						</div>
-					<% } %>-->
+
+							<div class="bio-music-volume audioShown">
+								<input type="range" class="custom-range" id="music-volume">
+							</div>
 						</div>
 						<!--<h6 class="text-center" style="color:var(-accent)"><%= user.views.length%> view<%=user.views.length == 1 ? "": "s"%></h6>-->
 					</div>
-					<!--
-			<% if(user.mp3) { %>
-				<h6 class="text-center mt-3" style="color:white">click somewhere for music</h6>
-			<% } %>-->
+					
+					
+					<h6 class="text-center mt-3 audioShown" style="color:white">click somewhere for music</h6>
+			
 				</div>
 			</div>
 		</div>
@@ -104,10 +106,10 @@
 		<script src="/assets/index.js"></script>
 		<script type="module">
 			const params = new URLSearchParams(document.location.search);
-			if (!params.has("username")) document.pathname = "/";
+			if (params.get("username") == "") document.pathname = "/";
 
 			const username = params.get("username");
-
+			
 			const req = await fetch(`${window.bio_pages.api}/user/${username}`);
 
 			if (req.ok) {
@@ -117,6 +119,22 @@
 				document.getElementById("username").innerText = json.username;
 				document.getElementById("contact").innerText = json.contact;
 
+				if(json.audio) {
+					const audio = document.getElementById("audio");
+
+					audio.firstElementChild.src = `${window.bio_pages.cdn}${json.username}_audio`;
+					audio.load()
+
+					document.addEventListener("click", () => {
+						audio.play()
+					})	
+
+					document.getElementById("music-volume").addEventListener("input", function () {
+						audio.volume = document.getElementById("music-volume").value/100;
+					})
+				} else {
+					[...document.querySelectorAll(".audioShown")].forEach(e => e.remove());
+				}
 				document.getElementById("profile_picture").src = json.profile_picture
 					? `${window.bio_pages.cdn}${json.username}_pfp`
 					: "https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png";

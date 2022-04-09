@@ -1,80 +1,94 @@
-<head>
-    <meta charset="utf-8">
-	
-	<title>melon.rest</title>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>melon.rest</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    
-	<link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-	<link rel="stylesheet" href="/assets/style.css">
-    <link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet">
-    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-    <script async defer data-website-id="52103825-236b-4112-a027-59e9041c4e85" src="https://wave.yourfriend.lv/slay.js"></script>
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
 
-<div class="container vh-100">
-    <div class="row h-100">
-        <div class="col-md-6 offset-md-3 align-self-center">
-            <div class="bio-card animate__animated animate__fadeIn">
-                <div class="bio-body" style="background-color: var(--background);">    
-                    <h1 class="text-center" id="username">User (XXX)'s settings</h1>
-                    <!--
+		<link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+		<link rel="stylesheet" href="/assets/style.css" />
+		<link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" />
+		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+		<script
+			async
+			defer
+			data-website-id="52103825-236b-4112-a027-59e9041c4e85"
+			src="https://wave.yourfriend.lv/slay.js"
+		></script>
+	</head>
+	<body>
+		<div class="container vh-100">
+			<div class="row h-100">
+				<div class="col-md-6 offset-md-3 align-self-center">
+					<div class="bio-card animate__animated animate__fadeIn">
+						<div class="bio-body" style="background-color: var(--background)">
+							<h1 class="text-center" id="username">User (XXX)'s settings</h1>
+							<!--
                     <h6 class="text-center"><%-motd.message%></h6>
                     <h6 class="text-center">at <%=new Date(motd.time).toLocaleString()%></h6> [implement motd]
 -->
-                    <div class="bio-description" style="max-height:none;">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Profile Picture</span>
-                            </div>
+							<div class="bio-description" style="max-height: none">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Profile Picture</span>
+									</div>
 
-                            <input type="file" class="form-control"id="profile_picture" accept="image/*">
-                        </div>
+									<input type="file" class="form-control" id="profile_picture" accept="image/*" />
+								</div>
 
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Background</span>
-                            </div>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Background</span>
+									</div>
 
-                            <input type="file" class="form-control" id="background" accept="image/*">
-                        </div>
-                        <!--
+									<input type="file" class="form-control" id="background" accept="image/*" />
+								</div>
+								<!--
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Audio</span>
                             </div>
 
                             <input type="file" class="form-control" title="<%= user.mp3 %>" id="mp3" accept="audio/mp3,audio/*;capture=microphone">
-                        </div>--->
+                        </div>-->
 
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Contact</span>
-                            </div>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Contact</span>
+									</div>
 
-                            <input type="text" class="form-control" id="contact">
-                        </div>
+									<input type="text" class="form-control" id="contact" />
+								</div>
 
+								<div class="input-group mb-2">
+									<textarea class="form-control" id="description" rows="6"></textarea>
+								</div>
 
-                        <div class="input-group mb-2">
-                            <textarea type="text" class="form-control" id="description" rows="6"></textarea>
-                        </div>
-                        
-
-                        <div class="btn btn-success mr-2" id="submit">Submit</div>
-                        <!--
+								<div class="btn btn-success mr-2" id="submit">Submit</div>
+								<!--
                         <h3 class="text-center">Buttons</h3>
                         <div  id="iconList" class="text-center">
                             <% buttons.forEach(a=>{ %>
@@ -101,7 +115,7 @@
                         </div>
 -->
 
-                        <!--
+								<!--
                         <h3 class="text-center">Discord</h3>
 
                         <% if(user.discord) { %>
@@ -110,107 +124,118 @@
                         <% } else {%>
                             <button class="btn btn-primary" onclick="linkDiscord()">Link your Discord Account</button> [implement: discord]
                         <% } %>-->
-                        
-                        <div class="btn-group mt-2 mb-2">
-                            <div class="btn btn-danger" id="deleteAccount">Delete Account</div>
-                            <div class="btn btn-danger" id="changePassword">Change Password</div>
-                        </div>
 
-                        <iframe src="/user.html?username=" id="iframe" style="height: 300px;"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+								<div class="btn-group mt-2 mb-2">
+									<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
+									<div class="btn btn-danger" id="changePassword">Change Password</div>
+								</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+								<iframe src="/user.html?username=" id="iframe" style="height: 300px"></iframe>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
-<script src="https://unpkg.com/feather-icons"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+			integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+			integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
 
-<script src="/assets/index.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
+		<script src="https://unpkg.com/feather-icons"></script>
 
-<script type="module">
-    document.getElementById("submit").addEventListener("click", async () => {
-    const form = new FormData()
+		<script src="/assets/index.js"></script>
 
-    if(document.getElementById("profile_picture").files[0])
-    form.append('profile_picture', document.getElementById("profile_picture").files[0])
+		<script type="module">
+			document.getElementById("submit").addEventListener("click", async () => {
+				const form = new FormData();
 
-    if(document.getElementById("background").files[0])
-    form.append('background', document.getElementById("background").files[0])
+				if (document.getElementById("profile_picture").files[0])
+					form.append("profile_picture", document.getElementById("profile_picture").files[0]);
 
+				if (document.getElementById("background").files[0])
+					form.append("background", document.getElementById("background").files[0]);
 
-    if(document.getElementById("description").value)
-    form.append('description', document.getElementById("description").value)
+				if (document.getElementById("description").value)
+					form.append("description", document.getElementById("description").value);
 
-    if(document.getElementById("contact").value)
-    form.append("contact", document.getElementById("contact").value)
+				if (document.getElementById("contact").value)
+					form.append("contact", document.getElementById("contact").value);
 
+				const req = await fetch(`${window.bio_pages.api}/@me/updateBasicInfo`, {
+					method: "POST",
+					body: form,
+					headers: {
+						"X-Token": localStorage.getItem("token"),
+					},
+				});
 
-    const req = await fetch(`${window.bio_pages.api}/@me/updateBasicInfo`, {
-				method: "POST",
-				body: form,
-				headers: {
-					"X-Token": localStorage.getItem("token")
+				const res = await req.json();
+
+				if (req.ok) {
+					iziToast.success({
+						title: "Success",
+						message: "Basic Info updated!",
+						position: "center",
+						theme: "dark",
+					});
+
+					background.value = profile_picture.value = "";
+					document.getElementById("iframe").contentWindow.location.reload();
+				} else {
+					iziToast.error({
+						title: "Error",
+						message: res.message,
+						position: "center",
+						theme: "dark",
+					});
 				}
 			});
+		</script>
+		<script type="module">
+			// loading
+			if (localStorage.getItem("token")) {
+				const token = localStorage.getItem("token");
 
-
-			const res = await req.json();
-
-			if (req.ok) {
-				iziToast.success({
-					title: "Success",
-					message: "Basic Info updated!",
-					position: "center",
-					theme: "dark"
+				const req = await fetch(window.bio_pages.api + "/@me/info", {
+					headers: {
+						"X-Token": token,
+					},
 				});
 
-				background.value = profile_picture.value = "";
-                document.getElementById("iframe").contentWindow.location.reload();
+				if (req.ok) {
+					const json = await req.json();
+					document.getElementById("username").innerHTML = document
+						.getElementById("username")
+						.innerHTML.replace("(XXX)", json.username);
+
+					document.getElementById("contact").value = json.contact;
+					document.getElementById("description").value = json.description;
+					document.getElementById("iframe").src += json.username;
+					feather.replace();
+				} else {
+					localStorage.removeItem("token");
+
+					document.location.pathname = "/";
+				}
 			} else {
-				iziToast.error({
-					title: "Error",
-					message: res.message,
-					position: "center",
-					theme: "dark"
-				});
+				document.location.pathname = "/";
 			}
-        })
-</script>
-<script type="module"> // loading
-    if(localStorage.getItem("token")) {
-        const token = localStorage.getItem("token");
-
-        const req = await fetch(window.bio_pages.api+"/@me/info", {
-            headers: {
-                "X-Token": token
-            }
-        });
-
-        if(req.ok) {
-            const json = await req.json();
-            document.getElementById("username").innerHTML = document.getElementById("username").innerHTML.replace("(XXX)", json.username);
-
-            document.getElementById("contact").value = json.contact;
-            document.getElementById("description").value = json.description;
-            document.getElementById("iframe").src += json.username;
-            feather.replace()
-
-        } else {
-            localStorage.removeItem("token")
-
-            document.location.pathname = "/"
-        }
-    } else {
-        document.location.pathname = "/"
-    }
-</script>
-
-</body>
+		</script>
+	</body>
 </html>

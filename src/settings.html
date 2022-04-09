@@ -66,7 +66,7 @@
 
 									<input type="file" class="form-control" id="background" accept="image/*" />
 								</div>
-								
+
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Banner</span>
@@ -79,8 +79,8 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">Audio</span>
 									</div>
-		
-									<input type="file" class="form-control" id="audio" accept="audio/mpeg">
+
+									<input type="file" class="form-control" id="audio" accept="audio/mpeg" />
 								</div>
 
 								<div class="input-group mb-2">
@@ -96,22 +96,28 @@
 								</div>
 
 								<div class="btn btn-success mr-2" id="submit">Submit</div>
-								
+
 								<h3 class="text-center">Buttons</h3>
-								
-								<div id="buttonList" class="text-center">
-								</div>
+
+								<div id="buttonList" class="text-center"></div>
 
 								<p id="buttonInfo" class="text-center mx-3"></p>
 
-								<div class="bio-footer mb-2" id="placedIconList">
-								</div>
-								
+								<div class="bio-footer mb-2" id="placedIconList"></div>
 
+								<input
+									type="text"
+									class="form-control m-2"
+									id="buttonUrl"
+									placeholder="https://spotify.com"
+								/>
 
-								<input type="text" class="form-control m-2" id="buttonUrl" placeholder="https://spotify.com">
-
-								<input type="text" class="form-control mb-2 mx-2" id="buttonName" placeholder="my spotify">
+								<input
+									type="text"
+									class="form-control mb-2 mx-2"
+									id="buttonName"
+									placeholder="my spotify"
+								/>
 
 								<button class="btn btn-success" type="button" id="addButton">Add Button</button>
 
@@ -153,9 +159,7 @@
 		/>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script
-			src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
-		></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
 		<script src="https://unpkg.com/feather-icons"></script>
 
@@ -163,49 +167,51 @@
 		<script src="https://unpkg.com/feather-icons"></script>
 
 		<script type="module">
-			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`)
+			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`);
 			const availableButtons = await buttonFetch.json();
 
-			availableButtons.forEach((b,i) => {
+			availableButtons.forEach((b, i) => {
 				const icon = document.createElement("i");
-				icon.setAttribute("data-feather", b)
-				
-				document.getElementById("buttonList").appendChild(icon);
-			})
+				icon.setAttribute("data-feather", b);
 
-			feather.replace()
+				document.getElementById("buttonList").appendChild(icon);
+			});
+
+			feather.replace();
 
 			const buttonList = [...document.getElementById("buttonList").children];
 
-			buttonList.forEach(element =>{
-				element.addEventListener("click", ()=>{
-					buttonList.forEach(b => {
-						if(b.classList.contains("active"))
-							b.classList.remove("active")
+			buttonList.forEach((element) => {
+				element.addEventListener("click", () => {
+					buttonList.forEach((b) => {
+						if (b.classList.contains("active")) b.classList.remove("active");
 					});
-					
+
 					element.classList.add("active");
-				})
-			})
+				});
+			});
 
 			document.getElementById("addButton").addEventListener("click", async () => {
-				const activeButton = buttonList.find(e => e.classList.contains("active"));
+				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
-				if(activeButton && document.getElementById("buttonUrl").value) {
+				if (activeButton && document.getElementById("buttonUrl").value) {
 					const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
-						"method": "POST",
-						"body": JSON.stringify({
-							type: [...activeButton.classList].find(e => e.startsWith('feather-')).split("feather-").at(-1),
+						method: "POST",
+						body: JSON.stringify({
+							type: [...activeButton.classList]
+								.find((e) => e.startsWith("feather-"))
+								.split("feather-")
+								.at(-1),
 							url: document.getElementById("buttonUrl").value,
-							longName: document.getElementById("buttonName").value
+							longName: document.getElementById("buttonName").value,
 						}),
-						"headers": {
+						headers: {
 							"Content-Type": "application/json",
-							"X-Token": localStorage.getItem("token")
-						}
-					})
+							"X-Token": localStorage.getItem("token"),
+						},
+					});
 
-					if(req.ok) {
+					if (req.ok) {
 						location.reload();
 					} else {
 						iziToast.error({
@@ -216,7 +222,7 @@
 						});
 					}
 				}
-			})
+			});
 			document.getElementById("submit").addEventListener("click", async () => {
 				const form = new FormData();
 
@@ -285,37 +291,36 @@
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
-					
-					if(json.buttons.length) {
-						json.buttons.forEach(button => {
-							const link = document.createElement('a');
-							
-							const icon = document.createElement("i");
-							icon.setAttribute("data-feather", button.type)
 
-							if(json.buttons.length <= 3) {
+					if (json.buttons.length) {
+						json.buttons.forEach((button) => {
+							const link = document.createElement("a");
+
+							const icon = document.createElement("i");
+							icon.setAttribute("data-feather", button.type);
+
+							if (json.buttons.length <= 3) {
 								link.innerText = button.longName;
 							} else {
-								document.getElementById("buttonInfo").innerText = "More than 3 buttons will collapse!"
+								document.getElementById("buttonInfo").innerText = "More than 3 buttons will collapse!";
 							}
-							
+
 							link.title = button.url;
 							link.prepend(icon);
 
-
 							link.addEventListener("click", async () => {
 								const req = await fetch(window.bio_pages.api + "/@me/removeButton", {
-									"method": "POST",
-									"body": JSON.stringify({
-										type: button.type
+									method: "POST",
+									body: JSON.stringify({
+										type: button.type,
 									}),
-									"headers": {
+									headers: {
 										"Content-Type": "application/json",
 										"X-Token": token,
-									}
-								})
-						
-								if(req.ok) {
+									},
+								});
+
+								if (req.ok) {
 									location.reload();
 								} else {
 									iziToast.error({
@@ -325,11 +330,10 @@
 										theme: "dark",
 									});
 								}
-							})
-							
+							});
 
 							document.getElementById("placedIconList").appendChild(link);
-						})
+						});
 					}
 					feather.replace();
 				} else {

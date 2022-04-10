@@ -97,7 +97,7 @@
 
 								<div class="btn btn-success mr-2" id="submit">Submit</div>
 
-								<h3 class="text-center">Buttons</h3>
+								<h3 class="text-center mt-2">Buttons</h3>
 
 								<div id="buttonList" class="text-center"></div>
 
@@ -121,15 +121,14 @@
 
 								<button class="btn btn-success" type="button" id="addButton">Add Button</button>
 
-								<!--
-                        <h3 class="text-center">Discord</h3>
+										
+								<h3 class="text-center mt-2">Discord</h3>
 
-                        <% if(user.discord) { %>
-                            Logged in as <%=user.discord.username%>#<%=user.discord.discriminator%>!
-                            <button class="btn btn-primary" onclick="linkDiscord()">Relink your Discord Account</button>
-                        <% } else {%>
-                            <button class="btn btn-primary" onclick="linkDiscord()">Link your Discord Account</button> [implement: discord]
-                        <% } %>-->
+								<div id="discord" style="display: none">
+									Logged in as&nbsp;
+								</div>
+								
+								<button class="btn btn-primary" id="requestDiscordLink">Link your Discord Account</button>
 
 								<div class="btn-group mt-2 mb-2">
 									<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
@@ -191,6 +190,26 @@
 				});
 			});
 
+			document.getElementById("requestDiscordLink").addEventListener("click", async () => {
+				const req = await fetch(`${window.bio_pages.api}/@me/discordLink`, {
+					headers: {
+						"X-Token": localStorage.getItem("token"),
+					},
+				});
+
+				const json = await req.json();
+
+				if (req.ok) {
+					location.href = json.link
+				} else {
+					iziToast.error({
+						title: "Error",
+						message: json.message,
+						position: "center",
+						theme: "dark",
+					});
+				}
+			})
 			document.getElementById("addButton").addEventListener("click", async () => {
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
@@ -291,6 +310,11 @@
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
+
+					if(json.discord) {
+						document.getElementById("discord").style.display = "inherit"
+						document.getElementById("discord").innerText += `${json.discord.username}#${json.discord.discriminator}!`
+					}
 
 					if (json.buttons.length) {
 						json.buttons.forEach((button) => {

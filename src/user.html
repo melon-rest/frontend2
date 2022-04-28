@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>melon.rest</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+		<link rel="stylesheet" href="/assets/style.css" />
+		<link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" />
+		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+		<script
+			async
+			defer
+			data-website-id="52103825-236b-4112-a027-59e9041c4e85"
+			src="https://wave.yourfriend.lv/slay.js"
+		></script>
+
+		<meta property="og:site_name" content="melon.rest" />
+		<meta property="og:title" content="<%= user.username %>" />
+		<meta property="og:description" content="<%= user.description %>" />
+		<style>
+			.audioShown {
+				display: none !important;
+			}
+		</style>
+	</head>
+
+	<body id="background" style="background-size: cover; background-position: center">
+		<audio id="audio" class="audioShown" loop autoplay>
+			<source src="/?" type="audio/mpeg" />
+		</audio>
+
+		<div class="container vh-100">
+			<div class="row h-100">
+				<div class="col-md-6 offset-md-3 align-self-center">
+					<div class="bio-card">
+						<div class="bio-header" id="header">
+							<div class="row">
+								<div class="bio-details">
+									<img id="profile_picture" alt="Missing" src="/?" />
+									<h5 class="bio-username">
+										<span id="username"></span>
+										<span class="bio-contact" id="contact">placeholder</span>
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="bio-body">
+							<div class="bio-description" style="white-space: pre-wrap">
+								<p id="description"></p>
+							</div>
+
+							<div class="bio-music-volume audioShown">
+								<input type="range" class="custom-range" id="music-volume" />
+							</div>
+						</div>
+
+						<div class="bio-footer" id="icons"></div>
+					</div>
+
+					<h6 class="text-center mt-3 audioShown" style="color: white">click somewhere for music</h6>
+				</div>
+			</div>
+		</div>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+			integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+			integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+		noreferrer
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
+		<script src="/assets/index.js"></script>
+		<script src="https://unpkg.com/feather-icons"></script>
+
+		<script type="module">
+			const params = new URLSearchParams(document.location.search);
+			if (params.get("username") == "") document.pathname = "/";
+
+			const username = params.get("username");
+
+			const req = await fetch(`${window.bio_pages.api}/user/${username}`);
+
+			if (req.ok) {
+				const json = await req.json();
+
+				document.getElementById("description").innerText = json.description;
+				document.getElementById("username").innerText = json.username;
+				document.getElementById("contact").innerText = json.contact;
+
+				if (json.buttons) {
+					json.buttons.forEach((button) => {
+						const link = document.createElement("a");
+
+						const icon = document.createElement("i");
+						icon.setAttribute("data-feather", button.type);
+
+						if (json.buttons.length <= 3 && button.longName) {
+							link.innerText = button.longName;
+						}
+
+						link.href = button.url;
+						link.target = "_blank";
+						link.rel = "noreferrer";
+						link.prepend(icon);
+
+						document.getElementById("icons").appendChild(link);
+					});
+				}
+
+				if (json.banner) {
+					document.getElementById(
+						"header"
+					).style.backgroundImage = `url(${window.bio_pages.cdn}${json.username}_banner)`;
+				}
+
+				if (json.audio) {
+					const audio = document.getElementById("audio");
+
+					audio.firstElementChild.src = `${window.bio_pages.cdn}${json.username}_audio`;
+					audio.load();
+
+					document.addEventListener("click", () => {
+						audio.play();
+					});
+
+					document.getElementById("music-volume").addEventListener("input", function () {
+						audio.volume = document.getElementById("music-volume").value / 100;
+					});
+
+					[...document.querySelectorAll(".audioShown")].forEach((e) => (e.style.display = "inherit"));
+				}
+				document.getElementById("profile_picture").src = json.profile_picture
+					? `${window.bio_pages.cdn}${json.username}_pfp`
+					: "https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png";
+
+				if (json.background) {
+					document.getElementById(
+						"background"
+					).style.backgroundImage = `url(${window.bio_pages.cdn}${json.username}_bg)`;
+				} else {
+					document.getElementById("profile").classList.add("bg-slate-800");
+				}
+			} else {
+				document.getElementById("description").innerText = "This user you queried does not exist.";
+				document.getElementById("username").innerText = "missing user :(";
+				document.getElementById("contact").innerText = "";
+				document.getElementById("profile_picture").src =
+					"https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png";
+			}
+
+			feather.replace();
+		</script>
+	</body>
+</html>

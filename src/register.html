@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>melon.rest</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+		<link rel="stylesheet" href="/assets/style.css" />
+		<link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" />
+		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+		<script
+			async
+			defer
+			data-website-id="52103825-236b-4112-a027-59e9041c4e85"
+			src="https://wave.yourfriend.lv/slay.js"
+		></script>
+	</head>
+	<body>
+		<script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+
+		<div class="container vh-100 animate__animated animate__fadeIn">
+			<div class="row h-100">
+				<div class="col-md-6 offset-md-3 align-self-center">
+					<div class="bio-card">
+						<div class="bio-body">
+							<div class="bio-description" style="max-height: none">
+								<form>
+									<div class="d-flex flex-column text-center">
+										<p id="taken"></p>
+
+										<input
+											placeholder="username"
+											id="username"
+											type="text"
+											autocomplete="username"
+											class="text-white mx-5"
+										/>
+										<input
+											placeholder="password"
+											id="password"
+											type="password"
+											autocomplete="current-password"
+											class="text-white mx-5 mt-2 mb-2"
+										/>
+									</div>
+								</form>
+
+								<button id="submit" class="btn btn-success">register :)</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+			integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+			integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<script src="https://www.google.com/recaptcha/api.js?render=6LdUGxMdAAAAAOWwshJE2WPfvZgZTB5pzP5rWBR3"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
+		<script src="/assets/index.js"></script>
+
+		<script>
+			const username = document.getElementById("username");
+			const password = document.getElementById("password");
+			const taken = document.getElementById("taken");
+			let timer;
+
+			document.getElementById("submit").addEventListener("click", () => {
+				grecaptcha.ready(() => {
+					grecaptcha
+						.execute("6LdUGxMdAAAAAOWwshJE2WPfvZgZTB5pzP5rWBR3", { action: "submit" })
+						.then(async (token) => {
+							const req = await fetch(`${window.bio_pages.api}/register`, {
+								method: "POST",
+								body: JSON.stringify({
+									username: username.value,
+									password: password.value,
+									recaptcha: token,
+								}),
+
+								headers: {
+									"Content-Type": "application/json",
+								},
+							});
+
+							const res = await req.json();
+
+							if (req.ok) {
+								iziToast.success({
+									title: "Success",
+									message: "You've registered a account! Please log in now!",
+									position: "center",
+									theme: "dark",
+								});
+
+								setTimeout(() => {
+									window.location.href = "/";
+								}, 1000);
+							} else {
+								iziToast.error({
+									title: "Error",
+									message: res.message,
+									position: "center",
+									theme: "dark",
+								});
+							}
+						});
+				});
+			});
+			username.addEventListener("input", () => {
+				clearTimeout(timer);
+				timer = setTimeout(async () => {
+					const req = await fetch(`${window.bio_pages.api}/username-availability`, {
+						method: "POST",
+						body: JSON.stringify({
+							username: username.value,
+						}),
+
+						headers: {
+							"Content-Type": "application/json",
+						},
+					});
+
+					const res = await req.json();
+
+					if (res.taken) {
+						taken.innerText = "Username already in use :(";
+						taken.classList.remove("text-success");
+						taken.classList.add("text-danger");
+					} else {
+						taken.innerText = "Available for registration!";
+						taken.classList.add("text-success");
+						taken.classList.remove("text-danger");
+					}
+				}, 500);
+			});
+		</script>
+	</body>
+</html>

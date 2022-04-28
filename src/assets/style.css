@@ -97,6 +97,9 @@ particle .emoji {
 	height: 128px;
 	margin-right: 16px;
 	float: left;
+	object-fit: cover;
+    width: 150px;
+    height: 130px;
 }
 
 .bio-header {

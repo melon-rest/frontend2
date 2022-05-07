@@ -11,7 +11,7 @@ const isLocalhost = Boolean(
 );
 
 window.bio_pages = {
-	cdn: `https://cdn.melon.rest/${isLocalhost ? "melon-rest-dev" : "melon-rest"}/`,
+	cdn: `https://f004.backblazeb2.com/file/${isLocalhost ? "melon-rest-dev" : "melon-rest"}/`,
 	api: isLocalhost ? "http://localhost:8081/api/v1" : "https://api.melon.rest/api/v1",
 };
 

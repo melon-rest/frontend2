@@ -57,7 +57,7 @@
 		<div class="container vh-100">
 			<div class="row h-100">
 				<div class="col-md-6 offset-md-3 align-self-center">
-					<div class="bio-card">
+					<div class="bio-card" style="visibility: hidden;">
 						<div class="bio-header" id="header">
 							<div class="row">
 								<div class="bio-details">
@@ -176,12 +176,16 @@
 				} else {
 					document.getElementById("profile").classList.add("bg-slate-800");
 				}
+
+				document.querySelector(".bio-card").style.visibility = "inherit";
 			} else {
 				document.getElementById("description").innerText = "This user you queried does not exist.";
 				document.getElementById("username").innerText = "missing user :(";
 				document.getElementById("contact").innerText = "";
 				document.getElementById("profile_picture").src =
 					"https://cdn.discordapp.com/attachments/922128925692420176/946504823220621384/missing-profile.png";
+				document.querySelector(".bio-card").style.visibility = "inherit";
+
 			}
 
 			feather.replace();

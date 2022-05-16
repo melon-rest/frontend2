@@ -93,10 +93,10 @@
 
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
-										<span class="input-group-text">lastFM</span>
+										<span class="input-group-text">LastFM</span>
 									</div>
 
-									<input type="text" class="form-control" id="lastFM" />
+									<input type="text" class="form-control" id="lastfm" />
 								</div>
 
 								<div class="input-group mb-2">
@@ -268,8 +268,8 @@
 				if (document.getElementById("description").value)
 					form.append("description", document.getElementById("description").value);
 
-				if (document.getElementById("lastFM").value)
-					form.append("lastfm", document.getElementById("lastFM").value);
+				if (document.getElementById("lastfm").value)
+					form.append("lastfm", document.getElementById("lastfm").value);
 					
 				if (document.getElementById("contact").value)
 					form.append("contact", document.getElementById("contact").value);
@@ -316,10 +316,12 @@
 
 				if (req.ok) {
 					const json = await req.json();
+
 					document.getElementById("username").innerText = json.username;
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
+					document.getElementById("lastfm").value = json.lastfm;
 
 					if(json.discord) {
 						document.getElementById("discord").style.display = "inherit"

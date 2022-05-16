@@ -102,6 +102,12 @@ particle .emoji {
     height: 130px;
 }
 
+.bio-lastfm {
+	text-align: center; 
+	font-size: 15px; 
+	padding: 10px;
+}
+
 .bio-header {
 	padding: 16px;
 

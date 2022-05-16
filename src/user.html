@@ -61,15 +61,16 @@
 						<div class="bio-header" id="header">
 							<div class="row">
 								<div class="bio-details">
-									<img id="profile_picture" alt="Missing" src="/?" />
+									<img id="profile_picture" src="/?" />
 									<h5 class="bio-username">
 										<span id="username"></span>
-										<span class="bio-contact" id="contact">placeholder</span>
+										<span class="bio-contact" id="contact"></span>
 									</h5>
 								</div>
 							</div>
-						</div>
+						</div>	
 						<div class="bio-body">
+
 							<div class="bio-description" style="white-space: pre-wrap">
 								<p id="description"></p>
 							</div>
@@ -80,6 +81,8 @@
 						</div>
 
 						<div class="bio-footer" id="icons"></div>
+						<p id="lastfmPlaying" class="bio-lastfm"></p>
+
 					</div>
 
 					<h6 class="text-center mt-3 audioShown" style="color: white">click somewhere for music</h6>
@@ -122,6 +125,14 @@
 				document.getElementById("username").innerText = json.username;
 				document.getElementById("contact").innerText = json.contact;
 
+				if(json.lastfm) {
+					const lastfmReq = await fetch(`${window.bio_pages.api}/lastfm/${username}`);
+					if(lastfmReq.ok) {
+						const json = await lastfmReq.json();
+
+						document.getElementById("lastfmPlaying").innerText = `listening to ${json.artist} - ${json.name}`;
+					}
+				}
 				if (json.buttons) {
 					json.buttons.forEach((button) => {
 						const link = document.createElement("a");

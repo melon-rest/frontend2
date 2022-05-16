@@ -92,6 +92,14 @@
 								</div>
 
 								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">lastFM</span>
+									</div>
+
+									<input type="text" class="form-control" id="lastFM" />
+								</div>
+
+								<div class="input-group mb-2">
 									<textarea class="form-control" id="description" rows="6"></textarea>
 								</div>
 
@@ -260,6 +268,9 @@
 				if (document.getElementById("description").value)
 					form.append("description", document.getElementById("description").value);
 
+				if (document.getElementById("lastFM").value)
+					form.append("lastfm", document.getElementById("lastFM").value);
+					
 				if (document.getElementById("contact").value)
 					form.append("contact", document.getElementById("contact").value);
 

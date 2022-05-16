@@ -42,15 +42,10 @@
 		<meta property="og:site_name" content="melon.rest" />
 		<meta property="og:title" content="<%= user.username %>" />
 		<meta property="og:description" content="<%= user.description %>" />
-		<style>
-			.audioShown {
-				display: none !important;
-			}
-		</style>
 	</head>
 
 	<body id="background" style="background-size: cover; background-position: center">
-		<audio id="audio" class="audioShown" loop autoplay>
+		<audio id="audio" loop autoplay>
 			<source src="/?" type="audio/mpeg" />
 		</audio>
 
@@ -74,18 +69,12 @@
 							<div class="bio-description" style="white-space: pre-wrap">
 								<p id="description"></p>
 							</div>
-
-							<div class="bio-music-volume audioShown">
-								<input type="range" class="custom-range" id="music-volume" />
-							</div>
 						</div>
 
 						<div class="bio-footer" id="icons"></div>
-						<p id="lastfmPlaying" class="bio-lastfm"></p>
-
 					</div>
 
-					<h6 class="text-center mt-3 audioShown" style="color: white">click somewhere for music</h6>
+					<h6 class="text-center mt-3" style="color: white" id="lastfmPlaying">click somewhere for music</h6>
 				</div>
 			</div>
 		</div>
@@ -168,12 +157,6 @@
 					document.addEventListener("click", () => {
 						audio.play();
 					});
-
-					document.getElementById("music-volume").addEventListener("input", function () {
-						audio.volume = document.getElementById("music-volume").value / 100;
-					});
-
-					[...document.querySelectorAll(".audioShown")].forEach((e) => (e.style.display = "inherit"));
 				}
 				document.getElementById("profile_picture").src = json.profile_picture
 					? `${window.bio_pages.cdn}${json.username}_pfp`

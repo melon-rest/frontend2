@@ -46,10 +46,7 @@
 					<div class="bio-card animate__animated animate__fadeIn">
 						<div class="bio-body" style="background-color: var(--background)">
 							<h1 class="text-center">User <span id="username"></span>'s settings</h1>
-							<!--
-                    <h6 class="text-center"><%-motd.message%></h6>
-                    <h6 class="text-center">at <%=new Date(motd.time).toLocaleString()%></h6> [implement motd]
--->
+
 							<div class="bio-description" style="max-height: none">
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
@@ -142,6 +139,8 @@
 									<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
 									<div class="btn btn-danger" id="changePassword">Change Password</div>
 								</div>
+
+								<button class="btn btn-secondary" id="share">Share your profile!</button>
 
 								<iframe src="/user.html?username=" id="iframe" style="height: 300px"></iframe>
 							</div>
@@ -322,6 +321,16 @@
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
 					document.getElementById("lastfm").value = json.lastfm;
+					
+					document.getElementById("share").addEventListener("click", async () => {
+						iziToast.success({
+							title: "Success",
+							message: "Copied sharable link!",
+							position: "center",
+							theme: "dark",
+						});
+						await navigator.clipboard.writeText("https://melon.rest/#" + json.username)
+					})
 
 					if(json.discord) {
 						document.getElementById("discord").style.display = "inherit"

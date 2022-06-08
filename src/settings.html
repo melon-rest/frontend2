@@ -48,6 +48,8 @@
 							<h1 class="text-center">User <span id="username"></span>'s settings</h1>
 
 							<div class="bio-description" style="max-height: none">
+								<div class="btn btn-success mr-2 my-2 d-none" id="admin">Admin Interface</div>
+
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Profile Picture</span>
@@ -87,6 +89,7 @@
 
 									<input type="text" class="form-control" id="contact" />
 								</div>
+
 
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
@@ -336,7 +339,12 @@
 						document.getElementById("discord").style.display = "inherit"
 						document.getElementById("discord").innerText += `${json.discord.username}#${json.discord.discriminator}!`
 					}
-
+					if(json.admin) {
+						document.getElementById("admin").classList.remove("d-none");
+						document.getElementById("admin").addEventListener("click", () => {
+							location = "admin.html";
+						})
+					}
 					if (json.buttons.length) {
 						json.buttons.forEach((button) => {
 							const link = document.createElement("a");

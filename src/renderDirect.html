@@ -1,14 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="utf-8" />
+
 		<title>melon.rest</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+		<link rel="manifest" href="/favicon/site.webmanifest" />
+		<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/hover.css@2.3.2/css/hover-min.css"
+			rel="stylesheet"
+			crossorigin="anonymous"
+		/>
+		<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+		<link rel="stylesheet" href="/assets/style.css" />
+		<link href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" />
+		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+		<script
+			async
+			defer
+			data-website-id="52103825-236b-4112-a027-59e9041c4e85"
+			src="https://wave.yourfriend.lv/slay.js"
+		></script>
 	</head>
 	<body>
+		<script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
 
-        <h1 id="shart">loading </h1>
+		<meta property="og:site_name" content="melon.rest" />
+		<meta property="og:title" content="melon rest" />
+		<meta property="og:description" content="public bio service" />
+
+		<div class="container vh-100 animate__animated animate__fadeIn">
+			<div class="row h-100">
+				<div class="col-md-6 offset-md-3 align-self-center">
+					<div class="bio-card">
+						<div class="bio-body">
+							<div class="bio-description" style="max-height: none">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
+		<script src="/assets/index.js"></script>
 
 		<script>
-            document.getElementById("id").innerText += location.pathname.substring(1);
+			const username = document.location.pathname.substring(1);
+
+			if (username) {
+				document.body.innerHTML = "";
+
+				const iframe = document.createElement("iframe");
+
+				iframe.src = "/user.html?username=" + username;
+				iframe.style.height = "100%";
+				iframe.style.width = "100%";
+				iframe.style.position = "absolute";
+
+				document.body.appendChild(iframe);
+
+				iframe.addEventListener(
+					"load",
+					() => {
+						document.body.classList.remove("hidden");
+					},
+					true
+				);
+			} else {
+				document.body.classList.remove("hidden");
+			}
 		</script>
 	</body>
 </html>

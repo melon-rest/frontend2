@@ -170,10 +170,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
-		<script src="https://unpkg.com/feather-icons"></script>
+		<script src="https://kit.fontawesome.com/cfa5bf4059.js" crossorigin="anonymous"></script>
 
 		<script src="/assets/index.js"></script>
-		<script src="https://unpkg.com/feather-icons"></script>
+		<script src="https://kit.fontawesome.com/cfa5bf4059.js" crossorigin="anonymous"></script>
 
 		<script type="module">
 			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`);
@@ -181,12 +181,12 @@
 
 			availableButtons.forEach((b, i) => {
 				const icon = document.createElement("i");
-				icon.setAttribute("data-feather", b);
+				icon.className = button.type;;
 
 				document.getElementById("buttonList").appendChild(icon);
 			});
 
-			feather.replace();
+			
 
 			const buttonList = [...document.getElementById("buttonList").children];
 
@@ -224,21 +224,18 @@
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
 				if (activeButton && document.getElementById("buttonUrl").value) {
-					const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
-						method: "POST",
-						body: JSON.stringify({
-							type: [...activeButton.classList]
-								.find((e) => e.startsWith("feather-"))
-								.split("feather-")
-								.at(-1),
-							url: document.getElementById("buttonUrl").value,
-							longName: document.getElementById("buttonName").value,
-						}),
-						headers: {
-							"Content-Type": "application/json",
-							"X-Token": localStorage.getItem("token"),
-						},
-					});
+					                    const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            type: [...activeButton.classList].filter(x => x.startsWith("fa")).join(" "),
+                            url: document.getElementById("buttonUrl").value,
+                            longName: document.getElementById("buttonName").value,
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-Token": localStorage.getItem("token"),
+                        },
+                    });
 
 					if (req.ok) {
 						location.reload();
@@ -350,7 +347,7 @@
 							const link = document.createElement("a");
 
 							const icon = document.createElement("i");
-							icon.setAttribute("data-feather", button.type);
+							icon.className = button.type
 
 							if (json.buttons.length <= 3) {
 								link.innerText = button.longName;
@@ -388,7 +385,7 @@
 							document.getElementById("placedIconList").appendChild(link);
 						});
 					}
-					feather.replace();
+					
 				} else {
 					localStorage.removeItem("token");
 

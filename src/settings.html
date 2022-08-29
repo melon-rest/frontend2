@@ -170,10 +170,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
-		<script src="https://kit.fontawesome.com/cfa5bf4059.js" crossorigin="anonymous"></script>
 
 		<script src="/assets/index.js"></script>
-		<script src="https://kit.fontawesome.com/cfa5bf4059.js" crossorigin="anonymous"></script>
 
 		<script type="module">
 			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`);
@@ -224,7 +222,7 @@
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
 				if (activeButton && document.getElementById("buttonUrl").value) {
-					                    const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
+					const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
                         method: "POST",
                         body: JSON.stringify({
                             type: [...activeButton.classList].filter(x => x.startsWith("fa")).join(" "),

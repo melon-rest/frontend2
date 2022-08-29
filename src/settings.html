@@ -223,17 +223,17 @@
 
 				if (activeButton && document.getElementById("buttonUrl").value) {
 					const req = await fetch(`${window.bio_pages.api}/@me/addButton`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            type: [...activeButton.classList].filter(x => x.startsWith("fa")).join(" "),
-                            url: document.getElementById("buttonUrl").value,
-                            longName: document.getElementById("buttonName").value,
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Token": localStorage.getItem("token"),
-                        },
-                    });
+						method: "POST",
+						body: JSON.stringify({
+							type: [...activeButton.classList].filter(x => x.startsWith("fa")).join(" "),
+							url: document.getElementById("buttonUrl").value,
+							longName: document.getElementById("buttonName").value,
+						}),
+						headers: {
+							"Content-Type": "application/json",
+							"X-Token": localStorage.getItem("token"),
+						},
+					});
 
 					if (req.ok) {
 						location.reload();

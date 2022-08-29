@@ -46,8 +46,8 @@
 					<div class="bio-card animate__animated animate__fadeIn">
 						<div class="bio-body" style="background-color: var(--background)">
 							<h1 class="text-center"><span id="username"></span>'s Admin Panel</h1>
-                            
-                            <div class="bio-description" style="max-height: none">
+							
+							<div class="bio-description" style="max-height: none">
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<span class="input-group-text">Account</span>
@@ -56,9 +56,9 @@
 									<input type="text" class="form-control" id="deletableUser" />
 								</div>
 
-                                <div class="btn btn-danger" id="deleteAccount">Delete Account</div>
+								<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
 
-                            </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -102,40 +102,40 @@
 
 
 					if(!json.admin) {
-                        document.location.pathname = "/";
+						document.location.pathname = "/";
 					} else {
-                        document.getElementById("username").innerText = json.username;
+						document.getElementById("username").innerText = json.username;
 
-                        document.getElementById("deleteAccount").addEventListener("click", async () => {
-                            const req = await fetch(`${window.bio_pages.api}/@admin/delete`, {
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-Token": localStorage.getItem("token"),
-                                },
-                                method: "POST",
-                                body: JSON.stringify({
-                                    username: document.getElementById("deletableUser").value,
-                                }),
-                            });
+						document.getElementById("deleteAccount").addEventListener("click", async () => {
+							const req = await fetch(`${window.bio_pages.api}/@admin/delete`, {
+								headers: {
+									"Content-Type": "application/json",
+									"X-Token": localStorage.getItem("token"),
+								},
+								method: "POST",
+								body: JSON.stringify({
+									username: document.getElementById("deletableUser").value,
+								}),
+							});
 
-                            const json = await req.json();
+							const json = await req.json();
 
-                            if (req.ok) {
-                                iziToast.error({
-                                    title: "Account sucessfully deleted.",
-                                    position: "center",
-                                    theme: "dark",
-                                });   
-                            } else {
-                                iziToast.error({
-                                    title: "Error",
-                                    message: json.message,
-                                    position: "center",
-                                    theme: "dark",
-                                });
-                            }
-                        })
-                    }
+							if (req.ok) {
+								iziToast.error({
+									title: "Account sucessfully deleted.",
+									position: "center",
+									theme: "dark",
+								});   
+							} else {
+								iziToast.error({
+									title: "Error",
+									message: json.message,
+									position: "center",
+									theme: "dark",
+								});
+							}
+						})
+					}
 
 				} else {
 					localStorage.removeItem("token");

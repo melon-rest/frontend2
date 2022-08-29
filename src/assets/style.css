@@ -174,10 +174,11 @@ particle .emoji {
 	margin: 6px;
 }
 
-svg {
+.fa-brands, .fa-solid {
 	margin: 5px;
 	padding: 5px;
 	box-sizing: content-box;
+	font-size: 20px;
 }
 
 .active {

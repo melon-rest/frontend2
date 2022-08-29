@@ -177,9 +177,9 @@
 			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`);
 			const availableButtons = await buttonFetch.json();
 
-			availableButtons.forEach((b, i) => {
+			availableButtons.forEach(b => {
 				const icon = document.createElement("i");
-				icon.className = b.type;
+				icon.className = b;
 
 				document.getElementById("buttonList").appendChild(icon);
 			});

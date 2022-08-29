@@ -97,7 +97,7 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
 		<script src="/assets/index.js"></script>
-		<script src="https://unpkg.com/feather-icons"></script>
+		<script src="https://kit.fontawesome.com/cfa5bf4059.js" crossorigin="anonymous"></script>
 
 		<script type="module">
 			const params = new URLSearchParams(document.location.search);
@@ -127,7 +127,7 @@
 						const link = document.createElement("a");
 
 						const icon = document.createElement("i");
-						icon.setAttribute("data-feather", button.type);
+						icon.className = button.type;
 
 						if (json.buttons.length <= 3 && button.longName) {
 							link.innerText = button.longName;
@@ -179,7 +179,6 @@
 
 			}
 
-			feather.replace();
 		</script>
 	</body>
 </html>

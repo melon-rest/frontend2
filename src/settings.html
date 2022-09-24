@@ -330,6 +330,81 @@
 						await navigator.clipboard.writeText("https://melon.rest/" + json.username)
 					})
 
+					document.getElementById("deleteAccount").addEventListener("click", async () => {
+						iziToast.show({
+							theme: 'dark',
+							title: 'Are you sure you want to delete your account?',
+							position: 'center',
+							buttons: [
+								['<button>Yes</button>', async function (instance, toast) {
+									const req = await fetch(window.bio_pages.api + "/@me/delete", {
+										method: "POST",
+										headers: {
+											"X-Token": token,
+										},
+									});
+									if(req.ok) location.reload();
+								}, true],
+								['<button>No</button>', function (instance, toast) {
+									instance.hide({
+										transitionOut: 'fadeOutUp',
+									}, toast, 'buttonName');
+								}]
+							]
+						});
+					})
+
+
+					document.getElementById("changePassword").addEventListener("click", async () => {
+						iziToast.show({
+							timeout: 20000,
+							overlay: true,
+							displayMode: 'once',
+							id: 'inputs',
+							zindex: 999,
+							position: 'center',
+							drag: false,
+							inputs: [
+								['<input type="password" placeholder="Current Password" id="cpwd"></input></br>', 'keyup', ()=>{}, true],
+								['<input type="password" placeholder="New Password" id="npwd"></input></br>', 'keyup', ()=>{}, true],
+							],
+							buttons: [
+								['<button><b>Submit!</b></button>', async function (instance, toast) {
+									const rreq = await fetch(window.bio_pages.api + "/@me/changePassword", {
+										method: "POST",
+										body: JSON.stringify({
+											current: document.getElementById("cpwd").value,
+											new: document.getElementById("npwd").value,
+										}),
+										headers: {
+											"X-Token": token,
+											"Content-Type": "application/json"
+										},
+									});
+
+									if(rreq.ok) {
+										iziToast.success({
+											title: "Success",
+											message: "Password updated!",
+											position: "center",
+											theme: "dark",
+										});
+										instance.hide({
+											transitionOut: 'fadeOutUp',
+										}, toast, 'buttonName');
+										return;
+									};
+
+									iziToast.error({
+										title: "Error",
+										message: (await rreq.json()).message,
+										position: "center",
+										theme: "dark",
+									});
+								}, true]
+							],
+						});
+					})
 					if(json.discord) {
 						document.getElementById("discord").style.display = "inherit"
 						document.getElementById("discord").innerText += `${json.discord.username}#${json.discord.discriminator}!`

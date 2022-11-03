@@ -65,6 +65,14 @@
 											autocomplete="current-password"
 											class="text-white mx-5 mt-2 mb-2"
 										/>
+
+										<input
+											placeholder="000 000"
+											id="2fa"
+											type="text"
+											autocomplete="2fa"
+											class="text-white mx-5 mt-2 mb-2"
+										/>
 									</div>
 								</form><br>
 
@@ -99,8 +107,6 @@
 		<script src="/assets/index.js"></script>
 
 		<script>
-			const username = document.getElementById("username");
-			const password = document.getElementById("password");
 			const taken = document.getElementById("taken");
 			let timer;
 
@@ -108,8 +114,9 @@
 				const req = await fetch(`${window.bio_pages.api}/login`, {
 					method: "POST",
 					body: JSON.stringify({
-						username: username.value,
-						password: password.value,
+						username: document.getElementById("username").value,
+						password: document.getElementById("password").value,
+						verification: document.getElementById("2fa").value
 					}),
 
 					headers: {
@@ -121,7 +128,7 @@
 
 				if (req.ok) {
 					localStorage.setItem("token", res.token);
-
+					
 					iziToast.success({
 						title: "Success",
 						message: "Logged in sucessfully!",

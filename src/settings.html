@@ -141,6 +141,7 @@
 								<div class="btn-group mt-2 mb-2">
 									<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
 									<div class="btn btn-danger" id="changePassword">Change Password</div>
+									<div class="btn btn-danger" id="link2fa">Link 2fa</div>
 								</div>
 
 								<button class="btn btn-secondary" id="share">Share your profile!</button>
@@ -170,7 +171,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
-
+		<script src="//cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 		<script src="/assets/index.js"></script>
 
 		<script type="module">
@@ -313,7 +314,88 @@
 
 				if (req.ok) {
 					const json = await req.json();
+					
+					if(json.totpEnabled) {
+						document.getElementById("link2fa").innerText = "Unlink 2fa?";
+						document.getElementById("link2fa").addEventListener("click", async () => {
+							const rreq = await fetch(window.bio_pages.api + "/@me/totp/unlink", {
+								method: "POST",
+								headers: {
+									"X-Token": token,
+									"Content-Type": "application/json"
+								},
+							});
+							
+							if(rreq.ok) {
+								iziToast.success({
+									title: "Success",
+									message: "Unlinked!",
+									position: "center",
+									theme: "dark",
+								});
 
+								setTimeout(() => {
+									location.reload()
+								}, 1000);
+								return;
+							};
+						})
+					} else {
+						document.getElementById("link2fa").addEventListener("click", () => {
+							iziToast.show({
+								theme: 'dark',
+								title: 'Are you sure you want to add 2fa to your account?',
+								position: 'center',
+								buttons: [
+									['<button>Yes</button>', async function (instance, toast) {
+										const rreq = await fetch(window.bio_pages.api + "/@me/totp/link", {
+											method: "POST",
+											headers: {
+												"X-Token": token,
+												"Content-Type": "application/json"
+											},
+										});
+
+										if(rreq.ok) {
+											const jjson = await rreq.json();
+
+											iziToast.show({
+												title: "Success",
+												message: "Make sure to add your 2fa to your authenication app, such as Authy!<div id=\"qrcode\"></div>",
+												position: "center",
+												theme: "dark",
+												timeout: false,
+												close: false,
+												onOpening: () => {
+													let qrcode = new QRCode("qrcode");
+													qrcode.makeCode(jjson.uri);
+												},
+												buttons: [
+													['<button>I\'ve scanned it!</button>', function (instance, toast) {
+														instance.hide({
+															transitionOut: 'fadeOutUp',
+														}, toast, 'buttonName');
+														setTimeout(()=>{
+															location.reload()}, 1000)
+													}]
+												]
+											});
+											instance.hide({
+												transitionOut: 'fadeOutUp',
+											}, toast, 'buttonName');
+
+											return;
+										};
+									}, true],
+									['<button>No</button>', function (instance, toast) {
+										instance.hide({
+											transitionOut: 'fadeOutUp',
+										}, toast, 'buttonName');
+									}]
+								]
+							})
+						})
+					}
 					document.getElementById("username").innerText = json.username;
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
@@ -345,7 +427,7 @@
 									});
 									if(req.ok) location.reload();
 								}, true],
-								['<button>No</button>', function (instance, toast) {
+								['<button>Cancel</button>', function (instance, toast) {
 									instance.hide({
 										transitionOut: 'fadeOutUp',
 									}, toast, 'buttonName');

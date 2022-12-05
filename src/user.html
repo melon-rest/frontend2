@@ -150,6 +150,7 @@
 
 					audio.firstElementChild.src = `${window.bio_pages.cdn}${json.username}_audio`;
 					audio.load();
+					audio.play();
 
 					document.addEventListener("click", () => {
 						audio.play();

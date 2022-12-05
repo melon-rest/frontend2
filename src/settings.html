@@ -27,17 +27,10 @@
 			rel="stylesheet"
 			crossorigin="anonymous"
 		/>
-		<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 		<link rel="stylesheet" href="/assets/style.css" />
 		<link href="https://site-assets.fontawesome.com/releases/v6.1.2/css/all.css" rel="stylesheet" />
 		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-		<script
-			async
-			defer
-			data-website-id="52103825-236b-4112-a027-59e9041c4e85"
-			src="https://wave.yourfriend.lv/slay.js"
-		></script>
 	</head>
 	<body>
 		<div class="container vh-100">
@@ -129,13 +122,13 @@
 
 								<button class="btn btn-success" type="button" id="addButton">Add Button</button>
 
-										
+
 								<h3 class="text-center mt-2">Discord</h3>
 
 								<div id="discord" style="display: none">
 									Logged in as&nbsp;
 								</div>
-								
+
 								<button class="btn btn-primary" id="requestDiscordLink">Link your Discord Account</button>
 
 								<div class="btn-group mt-2 mb-2">
@@ -168,12 +161,10 @@
 			referrerpolicy="no-referrer"
 		/>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.3.1"></script>
 		<script src="//cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 		<script src="/assets/index.js"></script>
 
+		<!-- Script: Button functionality -->
 		<script type="module">
 			const buttonFetch = await fetch(`${window.bio_pages.api}/availableButtons`);
 			const availableButtons = await buttonFetch.json();
@@ -184,8 +175,6 @@
 
 				document.getElementById("buttonList").appendChild(icon);
 			});
-
-			
 
 			const buttonList = [...document.getElementById("buttonList").children];
 
@@ -198,7 +187,10 @@
 					element.classList.add("active");
 				});
 			});
+		</script>
 
+		<!-- Script: Discord link-->
+		<script>
 			document.getElementById("requestDiscordLink").addEventListener("click", async () => {
 				const req = await fetch(`${window.bio_pages.api}/@me/discordLink`, {
 					headers: {
@@ -219,6 +211,10 @@
 					});
 				}
 			})
+		</script>
+
+		<!-- Script: Button adding -->
+		<script>
 			document.getElementById("addButton").addEventListener("click", async () => {
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
@@ -248,6 +244,10 @@
 					}
 				}
 			});
+		</script>
+
+		<!-- Script: Submit updated data to server -->
+		<script>
 			document.getElementById("submit").addEventListener("click", async () => {
 				const form = new FormData();
 
@@ -268,7 +268,7 @@
 
 				if (document.getElementById("lastfm").value)
 					form.append("lastfm", document.getElementById("lastfm").value);
-					
+
 				if (document.getElementById("contact").value)
 					form.append("contact", document.getElementById("contact").value);
 
@@ -302,6 +302,188 @@
 				}
 			});
 		</script>
+		<!-- Script: 2FA -->
+		<script type="module">
+			window.enabled2fa = () => {
+				document.getElementById("link2fa").innerText = "Unlink 2fa?";
+				document.getElementById("link2fa").addEventListener("click", async () => {
+					const rreq = await fetch(window.bio_pages.api + "/@me/totp/unlink", {
+						method: "POST",
+						headers: {
+							"X-Token": token,
+							"Content-Type": "application/json"
+						},
+					});
+
+					if(rreq.ok) {
+						iziToast.success({
+							title: "Success",
+							message: "Unlinked!",
+							position: "center",
+							theme: "dark",
+						});
+
+						setTimeout(() => {
+							location.reload()
+						}, 1000);
+						return;
+					};
+				})
+			}
+
+			window.disabled2fa = () => {
+				document.getElementById("link2fa").addEventListener("click", () => {
+					iziToast.show({
+						theme: 'dark',
+						title: 'Are you sure you want to add 2fa to your account?',
+						position: 'center',
+						buttons: [
+							['<button>Yes</button>', async function (instance, toast) {
+								const rreq = await fetch(window.bio_pages.api + "/@me/totp/link", {
+									method: "POST",
+									headers: {
+										"X-Token": token,
+										"Content-Type": "application/json"
+									},
+								});
+
+								if(rreq.ok) {
+									const jjson = await rreq.json();
+
+									iziToast.show({
+										title: "Success",
+										message: "Make sure to add your 2fa to your authenication app, such as Authy!<div id=\"qrcode\"></div>",
+										position: "center",
+										theme: "dark",
+										timeout: false,
+										close: false,
+										onOpening: () => {
+											let qrcode = new QRCode("qrcode");
+											qrcode.makeCode(jjson.uri);
+										},
+										buttons: [
+											['<button>I\'ve scanned it!</button>', function (instance, toast) {
+												instance.hide({
+													transitionOut: 'fadeOutUp',
+												}, toast, 'buttonName');
+												setTimeout(()=>{
+													location.reload()}, 1000)
+											}]
+										]
+									});
+									instance.hide({
+										transitionOut: 'fadeOutUp',
+									}, toast, 'buttonName');
+
+									return;
+								};
+							}, true],
+							['<button>No</button>', function (instance, toast) {
+								instance.hide({
+									transitionOut: 'fadeOutUp',
+								}, toast, 'buttonName');
+							}]
+						]
+					})
+				})
+			}
+		</script>
+
+		<!-- Script: Share -->
+		<script>
+			document.getElementById("share").addEventListener("click", async () => {
+				iziToast.success({
+					title: "Success",
+					message: "Copied sharable link!",
+					position: "center",
+					theme: "dark",
+				});
+				await navigator.clipboard.writeText("https://melon.rest/" + json.username)
+			})
+		</script>
+
+		<!-- Script: Delete account -->
+		<script>
+			document.getElementById("deleteAccount").addEventListener("click", async () => {
+				iziToast.show({
+					theme: 'dark',
+					title: 'Are you sure you want to delete your account?',
+					position: 'center',
+					buttons: [
+						['<button>Yes</button>', async function (instance, toast) {
+							const req = await fetch(window.bio_pages.api + "/@me/delete", {
+								method: "POST",
+								headers: {
+									"X-Token": token,
+								},
+							});
+							if(req.ok) location.reload();
+						}, true],
+						['<button>Cancel</button>', function (instance, toast) {
+							instance.hide({
+								transitionOut: 'fadeOutUp',
+							}, toast, 'buttonName');
+						}]
+					]
+				});
+			})
+		</script>
+
+		<!-- Script: Change password -->
+		<script>
+			document.getElementById("changePassword").addEventListener("click", async () => {
+				iziToast.show({
+					timeout: 20000,
+					overlay: true,
+					displayMode: 'once',
+					id: 'inputs',
+					zindex: 999,
+					position: 'center',
+					drag: false,
+					inputs: [
+						['<input type="password" placeholder="Current Password" id="cpwd"></input></br>', 'keyup', ()=>{}, true],
+						['<input type="password" placeholder="New Password" id="npwd"></input></br>', 'keyup', ()=>{}, true],
+					],
+					buttons: [
+						['<button><b>Submit!</b></button>', async function (instance, toast) {
+							const rreq = await fetch(window.bio_pages.api + "/@me/changePassword", {
+								method: "POST",
+								body: JSON.stringify({
+									current: document.getElementById("cpwd").value,
+									new: document.getElementById("npwd").value,
+								}),
+								headers: {
+									"X-Token": token,
+									"Content-Type": "application/json"
+								},
+							});
+
+							if(rreq.ok) {
+								iziToast.success({
+									title: "Success",
+									message: "Password updated!",
+									position: "center",
+									theme: "dark",
+								});
+								instance.hide({
+									transitionOut: 'fadeOutUp',
+								}, toast, 'buttonName');
+								return;
+							};
+
+							iziToast.error({
+								title: "Error",
+								message: (await rreq.json()).message,
+								position: "center",
+								theme: "dark",
+							});
+						}, true]
+					],
+				});
+			})
+		</script>
+
+		<!-- Script: Login -->
 		<script type="module">
 			if (localStorage.getItem("token")) {
 				const token = localStorage.getItem("token");
@@ -314,179 +496,16 @@
 
 				if (req.ok) {
 					const json = await req.json();
-					
-					if(json.totpEnabled) {
-						document.getElementById("link2fa").innerText = "Unlink 2fa?";
-						document.getElementById("link2fa").addEventListener("click", async () => {
-							const rreq = await fetch(window.bio_pages.api + "/@me/totp/unlink", {
-								method: "POST",
-								headers: {
-									"X-Token": token,
-									"Content-Type": "application/json"
-								},
-							});
-							
-							if(rreq.ok) {
-								iziToast.success({
-									title: "Success",
-									message: "Unlinked!",
-									position: "center",
-									theme: "dark",
-								});
 
-								setTimeout(() => {
-									location.reload()
-								}, 1000);
-								return;
-							};
-						})
-					} else {
-						document.getElementById("link2fa").addEventListener("click", () => {
-							iziToast.show({
-								theme: 'dark',
-								title: 'Are you sure you want to add 2fa to your account?',
-								position: 'center',
-								buttons: [
-									['<button>Yes</button>', async function (instance, toast) {
-										const rreq = await fetch(window.bio_pages.api + "/@me/totp/link", {
-											method: "POST",
-											headers: {
-												"X-Token": token,
-												"Content-Type": "application/json"
-											},
-										});
+					if(json.totpEnabled) enabled2fa();
+						else disabled2fa();
 
-										if(rreq.ok) {
-											const jjson = await rreq.json();
-
-											iziToast.show({
-												title: "Success",
-												message: "Make sure to add your 2fa to your authenication app, such as Authy!<div id=\"qrcode\"></div>",
-												position: "center",
-												theme: "dark",
-												timeout: false,
-												close: false,
-												onOpening: () => {
-													let qrcode = new QRCode("qrcode");
-													qrcode.makeCode(jjson.uri);
-												},
-												buttons: [
-													['<button>I\'ve scanned it!</button>', function (instance, toast) {
-														instance.hide({
-															transitionOut: 'fadeOutUp',
-														}, toast, 'buttonName');
-														setTimeout(()=>{
-															location.reload()}, 1000)
-													}]
-												]
-											});
-											instance.hide({
-												transitionOut: 'fadeOutUp',
-											}, toast, 'buttonName');
-
-											return;
-										};
-									}, true],
-									['<button>No</button>', function (instance, toast) {
-										instance.hide({
-											transitionOut: 'fadeOutUp',
-										}, toast, 'buttonName');
-									}]
-								]
-							})
-						})
-					}
 					document.getElementById("username").innerText = json.username;
 					document.getElementById("contact").value = json.contact;
 					document.getElementById("description").value = json.description;
 					document.getElementById("iframe").src += json.username;
 					document.getElementById("lastfm").value = json.lastfm;
-					
-					document.getElementById("share").addEventListener("click", async () => {
-						iziToast.success({
-							title: "Success",
-							message: "Copied sharable link!",
-							position: "center",
-							theme: "dark",
-						});
-						await navigator.clipboard.writeText("https://melon.rest/" + json.username)
-					})
 
-					document.getElementById("deleteAccount").addEventListener("click", async () => {
-						iziToast.show({
-							theme: 'dark',
-							title: 'Are you sure you want to delete your account?',
-							position: 'center',
-							buttons: [
-								['<button>Yes</button>', async function (instance, toast) {
-									const req = await fetch(window.bio_pages.api + "/@me/delete", {
-										method: "POST",
-										headers: {
-											"X-Token": token,
-										},
-									});
-									if(req.ok) location.reload();
-								}, true],
-								['<button>Cancel</button>', function (instance, toast) {
-									instance.hide({
-										transitionOut: 'fadeOutUp',
-									}, toast, 'buttonName');
-								}]
-							]
-						});
-					})
-
-
-					document.getElementById("changePassword").addEventListener("click", async () => {
-						iziToast.show({
-							timeout: 20000,
-							overlay: true,
-							displayMode: 'once',
-							id: 'inputs',
-							zindex: 999,
-							position: 'center',
-							drag: false,
-							inputs: [
-								['<input type="password" placeholder="Current Password" id="cpwd"></input></br>', 'keyup', ()=>{}, true],
-								['<input type="password" placeholder="New Password" id="npwd"></input></br>', 'keyup', ()=>{}, true],
-							],
-							buttons: [
-								['<button><b>Submit!</b></button>', async function (instance, toast) {
-									const rreq = await fetch(window.bio_pages.api + "/@me/changePassword", {
-										method: "POST",
-										body: JSON.stringify({
-											current: document.getElementById("cpwd").value,
-											new: document.getElementById("npwd").value,
-										}),
-										headers: {
-											"X-Token": token,
-											"Content-Type": "application/json"
-										},
-									});
-
-									if(rreq.ok) {
-										iziToast.success({
-											title: "Success",
-											message: "Password updated!",
-											position: "center",
-											theme: "dark",
-										});
-										instance.hide({
-											transitionOut: 'fadeOutUp',
-										}, toast, 'buttonName');
-										return;
-									};
-
-									iziToast.error({
-										title: "Error",
-										message: (await rreq.json()).message,
-										position: "center",
-										theme: "dark",
-									});
-								}, true]
-							],
-						});
-					})
 					if(json.discord) {
 						document.getElementById("discord").style.display = "inherit"
 						document.getElementById("discord").innerText += `${json.discord.username}#${json.discord.discriminator}!`
@@ -540,7 +559,7 @@
 							document.getElementById("placedIconList").appendChild(link);
 						});
 					}
-					
+
 				} else {
 					localStorage.removeItem("token");
 

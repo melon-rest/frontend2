@@ -38,18 +38,30 @@
 				<div class="col-md-6 offset-md-3 align-self-center">
 					<div class="bio-card animate__animated animate__fadeIn">
 						<div class="bio-body" style="background-color: var(--background)">
-							<h1 class="text-center"><span id="username"></span>'s Admin Panel</h1>
+							<h1 class="text-center"><span id="zus"></span>'s Admin Panel</h1>
 
 							<div class="bio-description" style="max-height: none">
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
-										<span class="input-group-text">Account</span>
+										<span class="input-group-text">Username</span>
 									</div>
 
-									<input type="text" class="form-control" id="deletableUser" />
+									<input type="text" class="form-control" id="username" />
 								</div>
 
-								<div class="btn btn-danger" id="deleteAccount">Delete Account</div>
+								<div class="input-group my-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text">Label</span>
+									</div>
+
+									<input type="text" class="form-control" id="name" placeholder="name" />
+									<input type="text" class="form-control" id="color" placeholder="#ff00ff" />
+
+								</div>
+
+								<div class="btn btn-danger my-1" id="deleteAccount">Delete Account</div>
+								<div class="btn btn-success my-1" id="addLabel">Add label</div>
+								<div class="btn btn-danger my-1" id="deleteLabel">Delete label</div>
 
 							</div>
 						</div>
@@ -74,9 +86,113 @@
 
 		<script src="/assets/index.js"></script>
 
+		<!-- Script: Remove Label-->
+		<script>
+			document.getElementById("deleteLabel").addEventListener("click", async () => {
+				const req = await fetch("http://localhost:8081/api/v1/@admin/removeLabel", {
+					"headers": {
+						"content-type": "application/json",
+						"x-token": localStorage.getItem("token"),
+					},
+					method: "POST",
+					body: JSON.stringify({
+						username: document.getElementById("username").value,
+						labelName: document.getElementById("name").value
+					}),
+				});
 
-		<!-- Script: Admin-->
+				const json = await req.json();
+
+				if (req.ok) {
+					iziToast.success({
+						title: "Removed label!",
+						position: "center",
+						theme: "dark",
+					});
+				} else {
+					iziToast.error({
+						title: "Error",
+						message: json.message,
+						position: "center",
+						theme: "dark",
+					});
+				}
+			})
+		</script>
+
+		<!-- Script: Add Label-->
+		<script>
+			document.getElementById("addLabel").addEventListener("click", async () => {
+				const req = await fetch("http://localhost:8081/api/v1/@admin/addLabel", {
+					"headers": {
+						"content-type": "application/json",
+						"x-token": localStorage.getItem("token"),
+					},
+					method: "POST",
+					body: JSON.stringify({
+						username: document.getElementById("username").value,
+						label: {
+							name: document.getElementById("name").value,
+							color: document.getElementById("color").value
+						}
+					}),
+				});
+
+				const json = await req.json();
+
+				if (req.ok) {
+					iziToast.success({
+						title: "Added label!",
+						position: "center",
+						theme: "dark",
+					});
+				} else {
+					iziToast.error({
+						title: "Error",
+						message: json.message,
+						position: "center",
+						theme: "dark",
+					});
+				}
+			})
+		</script>
+
+		<!-- Script: Delete user-->
+		<script>
+			document.getElementById("deleteAccount").addEventListener("click", async () => {
+				const req = await fetch(`${window.bio_pages.api}/@admin/delete`, {
+					headers: {
+						"Content-Type": "application/json",
+						"X-Token": localStorage.getItem("token"),
+					},
+					method: "POST",
+					body: JSON.stringify({
+						username: document.getElementById("username").value,
+					}),
+				});
+
+				const json = await req.json();
+
+				if (req.ok) {
+					iziToast.error({
+						title: "Account sucessfully deleted.",
+						position: "center",
+						theme: "dark",
+					});
+				} else {
+					iziToast.error({
+						title: "Error",
+						message: json.message,
+						position: "center",
+						theme: "dark",
+					});
+				}
+			})
+		</script>
+
+		<!-- Script: Admin authenication-->
 		<script type="module">
+
 			if (localStorage.getItem("token")) {
 				const token = localStorage.getItem("token");
 
@@ -89,43 +205,11 @@
 				if (req.ok) {
 					const json = await req.json();
 
-
 					if(!json.admin) {
 						document.location.pathname = "/";
 					} else {
-						document.getElementById("username").innerText = json.username;
-
-						document.getElementById("deleteAccount").addEventListener("click", async () => {
-							const req = await fetch(`${window.bio_pages.api}/@admin/delete`, {
-								headers: {
-									"Content-Type": "application/json",
-									"X-Token": localStorage.getItem("token"),
-								},
-								method: "POST",
-								body: JSON.stringify({
-									username: document.getElementById("deletableUser").value,
-								}),
-							});
-
-							const json = await req.json();
-
-							if (req.ok) {
-								iziToast.error({
-									title: "Account sucessfully deleted.",
-									position: "center",
-									theme: "dark",
-								});
-							} else {
-								iziToast.error({
-									title: "Error",
-									message: json.message,
-									position: "center",
-									theme: "dark",
-								});
-							}
-						})
+						document.getElementById("zus").innerText = json.username;
 					}
-
 				} else {
 					localStorage.removeItem("token");
 

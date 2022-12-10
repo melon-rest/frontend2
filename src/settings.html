@@ -216,9 +216,8 @@
 
 		<!-- Script: Button adding -->
 		<script>
-			const buttonList = [...document.getElementById("buttonList").children];
-
 			document.getElementById("addButton").addEventListener("click", async () => {
+				const buttonList = [...document.getElementById("buttonList").children];
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 
 				if (activeButton && document.getElementById("buttonUrl").value) {

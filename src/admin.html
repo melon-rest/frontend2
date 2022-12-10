@@ -89,7 +89,7 @@
 		<!-- Script: Remove Label-->
 		<script>
 			document.getElementById("deleteLabel").addEventListener("click", async () => {
-				const req = await fetch(`${window.bio_pages.api}/api/v1/@admin/removeLabel`, {
+				const req = await fetch(`${window.bio_pages.api}/@admin/removeLabel`, {
 					"headers": {
 						"content-type": "application/json",
 						"x-token": localStorage.getItem("token"),
@@ -123,7 +123,7 @@
 		<!-- Script: Add Label-->
 		<script>
 			document.getElementById("addLabel").addEventListener("click", async () => {
-				const req = await fetch(`${window.bio_pages.api}/api/v1/@admin/addLabel`, {
+				const req = await fetch(`${window.bio_pages.api}/@admin/addLabel`, {
 					"headers": {
 						"content-type": "application/json",
 						"x-token": localStorage.getItem("token"),

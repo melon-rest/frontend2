@@ -175,18 +175,19 @@
 
 				document.getElementById("buttonList").appendChild(icon);
 			});
+			{
+				const buttonList = [...document.getElementById("buttonList").children];
 
-			const buttonList = [...document.getElementById("buttonList").children];
+				buttonList.forEach((element) => {
+					element.addEventListener("click", () => {
+						buttonList.forEach((b) => {
+							if (b.classList.contains("active")) b.classList.remove("active");
+						});
 
-			buttonList.forEach((element) => {
-				element.addEventListener("click", () => {
-					buttonList.forEach((b) => {
-						if (b.classList.contains("active")) b.classList.remove("active");
+						element.classList.add("active");
 					});
-
-					element.classList.add("active");
 				});
-			});
+			}
 		</script>
 
 		<!-- Script: Discord link-->
@@ -215,6 +216,8 @@
 
 		<!-- Script: Button adding -->
 		<script>
+			const buttonList = [...document.getElementById("buttonList").children];
+
 			document.getElementById("addButton").addEventListener("click", async () => {
 				const activeButton = buttonList.find((e) => e.classList.contains("active"));
 

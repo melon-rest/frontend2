@@ -1,3 +1,4 @@
 mkdir -p dist
 cp -r src/* dist/
-exit 0 # fuck you netlify!!
+
+exit 0

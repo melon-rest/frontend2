@@ -88,24 +88,17 @@
 
 		<!-- Script: Login -->
 		<script type="module">
-			// Auto-login via checking token
-			if(localStorage.getItem("token")) {
-				document.body.style.visibility = "hidden";
+			document.body.style.visibility = "hidden";
 
-				const tokenRequest = await fetch("https://api.melon.rest/api/v1/@me/info", {
-					headers: {
-						"x-token": localStorage.getItem("token")
-					}
-				})
+			const credRequest = await fetch(window.bio_pages.api + "/@me/info", {
+				credentials: "include"
+			})
 
-				if(!tokenRequest.ok) {
-					localStorage.removeItem("token");
-					location.reload()
-				} else {
-					window.location.href = "/settings";
-				}
+			if(credRequest.ok) 	{
+				window.location.href = "/settings"
+			} else {
+				document.body.style.visibility = "visible";
 			}
-
 			// Login via password/username
 			const taken = document.getElementById("taken");
 			let timer;
@@ -118,7 +111,7 @@
 						password: document.getElementById("password").value,
 						verification: document.getElementById("2fa").value
 					}),
-
+					credentials: 'include',
 					headers: {
 						"Content-Type": "application/json",
 					},
@@ -127,7 +120,6 @@
 				const res = await req.json();
 
 				if (req.ok) {
-					localStorage.setItem("token", res.token);
 
 					iziToast.success({
 						title: "Success",

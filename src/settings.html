@@ -22,7 +22,6 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 		<link rel="stylesheet" href="/assets/style.css" />
 		<link href="https://site-assets.fontawesome.com/releases/v6.1.2/css/all.css" rel="stylesheet" />
-		<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 	</head>
 	<body>
 		<div class="container vh-100">
@@ -506,10 +505,10 @@
 						const icon = document.createElement("i");
 						icon.className = button.type
 
-						if (json.buttons.length <= 3) {
+						if (json.buttons.length < 3) {
 							link.innerText = button.longName;
 						} else {
-							document.getElementById("buttonInfo").innerText = "More than 3 buttons will collapse!";
+							document.getElementById("buttonInfo").innerText = "A different style is applied to accounts with more than 3 buttons.";
 						}
 
 						link.title = button.url;

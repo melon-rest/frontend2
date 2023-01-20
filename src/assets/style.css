@@ -215,6 +215,13 @@ textarea {
 	border-radius: 5px;
 }
 
+.lengthen {
+	display: flex;
+	flex-direction: column;
+}
+.lengthen > a {
+	padding: 0;
+}
 .swal2-popup {
 	background: var(--background-accent) !important;
 }
